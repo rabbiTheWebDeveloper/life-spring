@@ -1,0 +1,89 @@
+name: staging
+
+# main is the only integration branch. Every push to main (a merged PR) builds
+# the image and deploys it to the staging box. Production is a GitHub Release
+# (see release.yml).
+# PRs run the `test` job (install + build) as the merge gate. A push to main
+# skips it: the Docker build in `deploy` builds the same code and fails first
+# if it is broken, so building it twice only costs time.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: registry.lifespringint.com/lifespring-apps/lifespring-admin
+  SERVICE: admin
+  SMOKE_HOST: admin2.staging.lifespringint.com
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ${{ vars.CI_RUNNER }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ${{ vars.CI_RUNNER }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Compute version
+        id: ver
+        run: |
+          # From the last release tag, so it cannot drift from what shipped.
+          LAST=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || echo v0.0.0)
+          BUILD=$(git rev-list "$LAST"..HEAD --count)
+          echo "value=${LAST}-dev.${BUILD}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: registry.lifespringint.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          # The runner runs as deploy on the box; a post-job logout would wipe the
+          # credential the host needs to pull outside CI.
+          logout: false
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            NEXT_PUBLIC_APP_VERSION=${{ steps.ver.outputs.value }}
+            NEXT_PUBLIC_API_BASE_URL=https://api.staging.lifespringint.com/
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:staging
+            ${{ env.IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Deploy on host
+        run: |
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "flock /tmp/ls-deploy.lock -c 'cd /srv/apps/lifespring && docker compose pull ${SERVICE} && docker compose up -d --no-deps ${SERVICE}'"
+      - name: Smoke check (via Traefik)
+        run: |
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "curl -fsS --retry 15 --retry-delay 6 --retry-all-errors -o /dev/null -k -H 'Host: ${SMOKE_HOST}' https://localhost/"

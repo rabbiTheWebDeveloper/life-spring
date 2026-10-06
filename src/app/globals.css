@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
+}
+
+body {
+	background: transparent;
+}
+
+@layer utilities {
+	.text-balance {
+		text-wrap: balance;
+	}
+}
+
+.scrollbar-thin {
+	scrollbar-width: thin;
+	scrollbar-color: #4caf50 transparent;
+}
+
+/* For WebKit browsers */
+.scrollbar-thin::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+	background-color: #b6b6b6;
+	border-radius: 1px;
+	border: 1px solid transparent;
+	background-clip: content-box;
+	margin-top: 4px;
+}
+
+.ant-modal .ant-modal-title {
+	/*text-align: center;*/
+	color: black !important;
+	font-size: 18px !important;
+	border-bottom: 1px solid gray !important;
+}
+.react-international-phone-input-container .react-international-phone-input {
+	border: none !important;
+}
+
+.react-international-phone-country-selector-button {
+	border: none !important;
+	border-right: 1px solid #00000021 !important;
+}
+
+.ant-table .ant-table-container .ant-table-thead > tr > th {
+	background-color: #134014 !important;
+	color: white !important;
+}
+
+.ant-table .ant-table-container .ant-table-tbody > tr > td {
+	color: #1f2937 !important; /* gray-800 for better visibility */
+	font-weight: 500 !important; /* medium font weight for better readability */
+}
+
+.ant-table .ant-table-container .ant-table-tbody > tr:hover > td {
+	background-color: #f9fafb !important; /* subtle hover effect */
+}

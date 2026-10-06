@@ -1,0 +1,14 @@
+#!/bin/sh
+echo "Running build process before pushing..."
+
+# Run the Next.js build command
+npm run build
+
+# Check if the build was successful
+if [ $? -ne 0 ]; then
+    echo "Build failed. Push aborted."
+    exit 1
+fi
+
+echo "Build succeeded. Proceeding with push."
+exit 0

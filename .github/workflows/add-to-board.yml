@@ -1,0 +1,21 @@
+name: add-to-board
+
+on:
+  issues:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  add-to-board:
+    runs-on: ${{ vars.CI_RUNNER }}
+    steps:
+      - name: Add issue to the lifespring-int board
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            await github.graphql(
+              `mutation($p:ID!,$c:ID!){addProjectV2ItemById(input:{projectId:$p,contentId:$c}){item{id}}}`,
+              { p: 'PVT_kwDOD-95X84BjdAc', c: context.payload.issue.node_id },
+            );

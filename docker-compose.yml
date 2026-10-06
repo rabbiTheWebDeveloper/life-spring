@@ -1,0 +1,17 @@
+services:
+  admin:
+    build:
+      context: .
+      args:
+        # NEXT_PUBLIC_* is baked into the client bundle at build time.
+        # (The current Dockerfile does not yet declare ARG NEXT_PUBLIC_API_BASE_URL;
+        # add it there for the client bundle to pick this up. See README.)
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-https://api.staging.lifespringint.com/}
+    image: lifespring-admin
+    container_name: lifespring-admin
+    ports:
+      # host 3008 (deployed/tester port) -> container 3001 (Dockerfile PORT/EXPOSE)
+      - "3008:3001"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-https://api.staging.lifespringint.com/}
+    restart: unless-stopped

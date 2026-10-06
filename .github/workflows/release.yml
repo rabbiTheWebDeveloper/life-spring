@@ -1,0 +1,95 @@
+name: release
+
+# Production deploy = a GitHub Release. Publish a release (tag vX.Y.Z, target =
+# main) and this workflow builds that tag and deploys it to the production box.
+# The tag must be on main: main is what the staging box has been running.
+# The `guard` job checks that and that the commit had a green staging deploy;
+# it does not rebuild — the Docker build in `deploy` is the build.
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: registry.lifespringint.com/lifespring-apps/lifespring-admin
+  SERVICE: admin
+  SMOKE_HOST: admin2.lifespringint.com
+
+jobs:
+  guard:
+    runs-on: ${{ vars.CI_RUNNER }}
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Release tag must be on main
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag $TAG is not on main. Re-create the release with target = main."
+            exit 1
+          fi
+      - name: Commit must have a green staging deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          concl=$(gh run list --workflow staging.yml --event push --commit "$GITHUB_SHA" \
+            --json status,conclusion -q '[.[] | select(.status=="completed")] | first | .conclusion' 2>/dev/null || true)
+          if [ "$concl" != "success" ]; then
+            echo "::error::Commit ${GITHUB_SHA:0:7} has no successful staging deploy (found: ${concl:-none}). Merge to main and let staging go green first."
+            exit 1
+          fi
+
+  deploy:
+    needs: guard
+    runs-on: ${{ vars.CI_RUNNER }}
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: registry.lifespringint.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          # The runner runs as deploy on the box; a post-job logout would wipe the
+          # credential the host needs to pull outside CI.
+          logout: false
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            NEXT_PUBLIC_APP_VERSION=${{ github.event.release.tag_name }}
+            NEXT_PUBLIC_API_BASE_URL=https://api2.lifespringint.com/
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:production
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:${{ github.event.release.tag_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.PROD_DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "${{ secrets.PROD_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Deploy on prod
+        run: |
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.DEPLOY_USER }}@${{ secrets.PROD_DEPLOY_HOST }}" \
+            "flock /tmp/lsp-deploy.lock -c '/srv/apps/lifespring/deploy-service.sh ${SERVICE}'"
+      - name: Smoke check (via Traefik)
+        run: |
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.DEPLOY_USER }}@${{ secrets.PROD_DEPLOY_HOST }}" \
+            "curl -fsS --retry 15 --retry-delay 6 --retry-all-errors -o /dev/null -k -H 'Host: ${SMOKE_HOST}' https://localhost/"

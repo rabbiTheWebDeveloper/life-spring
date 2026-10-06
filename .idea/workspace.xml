@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f3e6bf7f-bc0c-45d6-a94c-263d838a2de7" name="Changes" comment="appointment changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/CookieUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/CookieUtils.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/bugfix/LS-100-admin-webadmin-portal-refactoring" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/SHUKHEE-2131-replace-radis-with-next-cookies" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2tspogJbxkBJm0ezgCA23nMzsU0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "development",
+    "last_opened_file_path": "C:/Users/DELL/Desktop/office/Bitbucket/lifespring-admin/src/app/(logged-in)/appointment-booking/components",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/dhs/Documents/Software development/Shukhee Project/Life spring/lifespring-admin/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\office\Bitbucket\lifespring-admin\src\app\(logged-in)\appointment-booking\components" />
+      <recent name="C:\Users\DELL\Desktop\office\Bitbucket\lifespring-admin\src\app\(logged-in)\doctor\components" />
+      <recent name="C:\Users\DELL\Desktop\office\Bitbucket\lifespring-admin\src\app\(logged-in)\doctor" />
+      <recent name="C:\Users\DELL\Desktop\office\Bitbucket\lifespring-admin\src\helper" />
+      <recent name="C:\Users\DELL\Desktop\office\Bitbucket\lifespring-admin\src\app\(logged-in)" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="LS-85 role permission for doctor,patient,dashboard,appointment,administration">
+      <option name="closed" value="true" />
+      <created>1741150077847</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1741150077847</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f3e6bf7f-bc0c-45d6-a94c-263d838a2de7" name="Changes" comment="LS-85 role permission for doctor,patient,dashboard,appointment,administration" />
+      <created>1741150812397</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1741150812397</updated>
+      <workItem from="1741150813570" duration="845000" />
+      <workItem from="1741156320324" duration="6453000" />
+      <workItem from="1741166388926" duration="1023000" />
+      <workItem from="1741230912401" duration="114000" />
+      <workItem from="1741238877156" duration="447000" />
+      <workItem from="1741248248695" duration="586000" />
+      <workItem from="1742699899619" duration="714000" />
+      <workItem from="1742700639377" duration="875000" />
+      <workItem from="1742701540261" duration="12785000" />
+      <workItem from="1742804916561" duration="1187000" />
+      <workItem from="1743024651979" duration="553000" />
+      <workItem from="1744261317180" duration="2094000" />
+      <workItem from="1744534483988" duration="899000" />
+      <workItem from="1744656759615" duration="2021000" />
+      <workItem from="1744699433094" duration="1560000" />
+      <workItem from="1746338078527" duration="18657000" />
+      <workItem from="1751962095661" duration="1843000" />
+      <workItem from="1752121865638" duration="2538000" />
+      <workItem from="1752400823446" duration="3690000" />
+      <workItem from="1753500740730" duration="658000" />
+      <workItem from="1753519992374" duration="684000" />
+      <workItem from="1753524204459" duration="5197000" />
+      <workItem from="1753693392564" duration="3991000" />
+      <workItem from="1753772414135" duration="646000" />
+      <workItem from="1753773068087" duration="20462000" />
+      <workItem from="1756099772130" duration="596000" />
+      <workItem from="1758713759742" duration="1667000" />
+      <workItem from="1758786435129" duration="609000" />
+      <workItem from="1759034831851" duration="185000" />
+      <workItem from="1759135860144" duration="1988000" />
+      <workItem from="1762169075292" duration="507000" />
+      <workItem from="1762234984152" duration="3523000" />
+      <workItem from="1762855346384" duration="496000" />
+      <workItem from="1763276658318" duration="1992000" />
+    </task>
+    <task id="LOCAL-00002" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1741151646001</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741151646001</updated>
+    </task>
+    <task id="LOCAL-00003" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1741160321721</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741160321721</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1741239257421</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741239257421</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1741248756706</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741248756706</updated>
+    </task>
+    <task id="LOCAL-00006" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1742701094025</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1742701094025</updated>
+    </task>
+    <task id="LOCAL-00007" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1742701574711</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1742701574711</updated>
+    </task>
+    <task id="LOCAL-00008" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1742703925591</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1742703925591</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated.">
+      <option name="closed" value="true" />
+      <created>1742710931764</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1742710931764</updated>
+    </task>
+    <task id="LOCAL-00010" summary="api base url updated">
+      <option name="closed" value="true" />
+      <created>1744658607042</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1744658607042</updated>
+    </task>
+    <task id="LOCAL-00011" summary="api base url updated">
+      <option name="closed" value="true" />
+      <created>1752402724718</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1752402724718</updated>
+    </task>
+    <task id="LOCAL-00012" summary="appointment changes">
+      <option name="closed" value="true" />
+      <created>1753083860171</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1753083860171</updated>
+    </task>
+    <task id="LOCAL-00013" summary="appointment changes">
+      <option name="closed" value="true" />
+      <created>1753782459134</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1753782459134</updated>
+    </task>
+    <task id="LOCAL-00014" summary="appointment changes">
+      <option name="closed" value="true" />
+      <created>1753894191367</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1753894191367</updated>
+    </task>
+    <task id="LOCAL-00015" summary="appointment changes">
+      <option name="closed" value="true" />
+      <created>1763277756082</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1763277756082</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="LS-85 role permission for doctor,patient,dashboard,appointment,administration" />
+    <MESSAGE value="updated." />
+    <MESSAGE value="api base url updated" />
+    <MESSAGE value="appointment changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="appointment changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/(logged-in)/patient/components/PatientTable.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/(logged-in)/appointment-booking/components/BookingDateTimeSelection.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/(logged-in)/appointment-booking/components/BookingDateTimeSelection.tsx</url>
+          <line>45</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

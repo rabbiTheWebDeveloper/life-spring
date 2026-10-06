@@ -1,0 +1,37 @@
+name: purge-packages
+
+# GHCR storage is one allowance shared by every repo in the org, and a full one
+# refuses jobs everywhere. This keeps each package small enough that it cannot
+# happen again.
+
+on:
+  schedule:
+    # 03:41 Dhaka on Mondays. Off the hour so it does not land with everyone else's.
+    - cron: '41 21 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: List what would go without deleting anything
+        type: boolean
+        default: true
+      keep-recent:
+        description: How many per-commit builds to keep
+        type: string
+        default: '10'
+
+jobs:
+  purge:
+    runs-on: ${{ vars.CI_RUNNER }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Purge superseded image versions
+        env:
+          ORG: ${{ github.repository_owner }}
+          PACKAGE: ${{ github.event.repository.name }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry-run || 'false' }}
+          KEEP_RECENT: ${{ inputs.keep-recent || '10' }}
+        run: python3 .github/scripts/purge-packages.py
