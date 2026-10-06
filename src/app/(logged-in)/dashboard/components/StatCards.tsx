@@ -228,17 +228,15 @@ const StatCards = () => {
 	return (
 		<SidebarPermission tag="dashboard">
 			<RolePermissionChecker tag="dashboard" name="list">
-				<div className="bg-[#F5F6FA]">
-					<div className="w-full p-4 pt-0">
-						<div className="grid grid-cols-4 gap-6 mt-5">
-							{loading
-								? Array.from({ length: dashboardCards.length }).map((_, index) => (
-										<DashInfoCards key={`skeleton-${index}`} loading={true} />
-								  ))
-								: dashboardCards?.map((card, index) => (
-										<DashInfoCards key={index} text={card.text} amount={card.amount} icon={card.icon} loading={false} />
-								  ))}
-						</div>
+				<div className="w-full">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 mt-4">
+						{loading
+							? Array.from({ length: dashboardCards.length }).map((_, index) => (
+									<DashInfoCards key={`skeleton-${index}`} loading={true} />
+							  ))
+							: dashboardCards?.map((card, index) => (
+									<DashInfoCards key={index} text={card.text} amount={card.amount} icon={card.icon} loading={false} />
+							  ))}
 					</div>
 				</div>
 			</RolePermissionChecker>

@@ -12,7 +12,7 @@ interface Props {
 export default function ExecutiveDistributionCard({ data }: Props) {
 	const chartRef = useRef<HTMLDivElement>(null);
 	const chartInstance = useRef<echarts.ECharts | null>(null);
-	const [activeCategory, setActiveCategory] = useState<"Students" | "Applications" | "Patients">("Students");
+	const [activeCategory, setActiveCategory] = useState<string>("Appointments");
 
 	const { summary, executives } = data;
 	const totalCount = executives.reduce((sum, item) => sum + item.count, 0);
@@ -40,10 +40,11 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 				formatter: (params: any) => {
 					const exec = executives.find((e) => e.name === params.name);
 					const percent = params.percent || 0;
+					const countLabel = params.value === 1 ? "Appointment" : "Appointments";
 					return `
 						<div style="font-family: inherit; padding: 6px 10px; font-size: 13px;">
 							<div style="font-weight: 700; color: #1e293b; margin-bottom: 4px;">${params.name}</div>
-							<div style="color: #64748b; font-size: 12px;">${params.value} ${activeCategory} (${percent}%)</div>
+							<div style="color: #64748b; font-size: 12px;">${params.value} ${countLabel} (${percent}%)</div>
 							${
 								exec
 									? `<div style="color: #0f766e; font-weight: 700; margin-top: 6px; font-size: 13px;">৳${exec.totalAmount.toLocaleString()} BDT</div>`
@@ -158,10 +159,10 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 									TOTAL COUNT
 								</span>
 								<span className="text-[26px] font-extrabold text-slate-800 tracking-tight leading-tight mt-0.5">
-									{totalCount} {activeCategory}
+									{totalCount} {totalCount === 1 ? "Appointment" : "Appointments"}
 								</span>
 								<span className="text-xs font-semibold text-blue-600 mt-0.5">
-									{executives.length} CRM Staff
+									{executives.length} {executives.length === 1 ? "Executive" : "Executives"}
 								</span>
 							</div>
 						</div>
@@ -169,7 +170,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 						{/* Subtitle directly below donut */}
 						<p className="text-xs font-normal text-slate-400 mt-4 tracking-normal text-center">
 							Showing distribution by{" "}
-							<span className="text-slate-700 font-semibold">{activeCategory} In Charge</span>
+							<span className="text-slate-700 font-semibold">Appointments In Charge</span>
 						</p>
 					</div>
 
@@ -214,7 +215,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 								<div className="flex flex-col sm:items-start pl-6 sm:pl-0 min-w-[140px]">
 									<div className="flex items-center gap-1.5 text-slate-700 font-semibold text-sm">
 										<HiOutlineUsers className="text-slate-500 text-sm" />
-										<span>{exec.count} {activeCategory}</span>
+										<span>{exec.count} {exec.count === 1 ? "Appointment" : "Appointments"}</span>
 									</div>
 									<span className="text-xs text-slate-400 font-normal mt-0.5">
 										({exec.sharePercentage}% share)
