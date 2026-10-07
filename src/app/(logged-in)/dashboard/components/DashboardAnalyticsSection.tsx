@@ -6,6 +6,7 @@ import { DatePicker, Select, Input, Tooltip, message, Spin, Tag } from "antd";
 import ExecutiveDistributionCard from "./ExecutiveDistributionCard";
 import ExecutiveBarChart from "./ExecutiveBarChart";
 import DailyApplicationGraph from "./DailyApplicationGraph";
+import AppointmentDashTable from "./AppointmentDashTable";
 import { transformAppointmentsToAnalytics } from "../data/appointmentDataTransformer";
 import { getAppointmentList, getPaymentSummary } from "@/app/(logged-in)/appointment/actions/GetAppointmentList";
 import { getDoctorList } from "@/app/(logged-in)/appointment/actions/getDoctorList";
@@ -32,6 +33,7 @@ import {
 	FaPercent,
 	FaFileInvoice,
 	FaUserTie,
+	FaTable,
 } from "react-icons/fa";
 
 const { RangePicker } = DatePicker;
@@ -43,7 +45,7 @@ export default function DashboardAnalyticsSection() {
 
 	// Loading & Active Tab
 	const [loading, setLoading] = useState<boolean>(true);
-	const [activeTab, setActiveTab] = useState<"all" | "distribution" | "trends">("all");
+	const [activeTab, setActiveTab] = useState<"all" | "distribution" | "trends" | "table">("all");
 
 	// Filter state (matches API parameters)
 	// By default: created date is set to current month!
@@ -324,21 +326,21 @@ export default function DashboardAnalyticsSection() {
 			<RolePermissionChecker tag="dashboard" name="list">
 				<div className="flex flex-col gap-6 w-full">
 					{/* Header Card with Comprehensive Filter Toolbar */}
-					<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] flex flex-col gap-5">
+					<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] flex flex-col gap-5">
 						{/* Title & Connection Status */}
 						<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
 							<div className="flex flex-col">
 								<div className="flex items-center gap-2.5">
-									<div className="w-3 h-7 bg-gradient-to-b from-blue-600 via-indigo-600 to-purple-600 rounded-full" />
-									<h2 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">
+									<div className="w-3 h-7 bg-gradient-to-b from-[#134014] via-[#1E7023] to-[#4CAF50] rounded-full" />
+									<h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
 										Executive & Appointment Analytics
 									</h2>
-									<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+									<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs">
 										<span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
 										Live API Active
 									</span>
 								</div>
-								<p className="text-xs font-medium text-slate-400 mt-1 pl-5">
+								<p className="text-xs font-medium text-slate-500 mt-1 pl-5">
 									Real-time intake, CRM staff assignment, and billings filtered by Current Month creation and appointment schedule dates.
 								</p>
 							</div>
@@ -352,9 +354,9 @@ export default function DashboardAnalyticsSection() {
 											fetchPaymentData();
 										}}
 										disabled={loading}
-										className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200/90 text-slate-700 transition-all cursor-pointer disabled:opacity-50 shadow-sm"
+										className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-50 hover:bg-emerald-100/80 text-[#134014] border border-emerald-200 transition-all cursor-pointer disabled:opacity-50 shadow-xs"
 									>
-										<FaRedo className={`text-xs ${loading ? "animate-spin text-blue-600" : ""}`} />
+										<FaRedo className={`text-xs ${loading ? "animate-spin text-[#134014]" : ""}`} />
 										Refresh
 									</button>
 								</Tooltip>
@@ -363,7 +365,7 @@ export default function DashboardAnalyticsSection() {
 									<button
 										type="button"
 										onClick={resetAllFilters}
-										className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all cursor-pointer shadow-sm"
+										className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-all cursor-pointer shadow-xs"
 									>
 										<FaTimes className="text-xs" />
 										Reset Filters
@@ -375,7 +377,7 @@ export default function DashboardAnalyticsSection() {
 						{/* Quick Preset Buttons */}
 						<div className="flex flex-wrap items-center gap-2">
 							<span className="text-xs font-bold text-slate-500 mr-1 flex items-center gap-1.5">
-								<FaCalendarAlt className="text-blue-600 text-xs" />
+								<FaCalendarAlt className="text-[#134014] text-xs" />
 								Date Presets:
 							</span>
 							{[
@@ -392,8 +394,8 @@ export default function DashboardAnalyticsSection() {
 									onClick={() => handleDatePreset(p.key)}
 									className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all ${
 										datePreset === p.key
-											? "bg-blue-600 text-white shadow-md shadow-blue-500/25 ring-2 ring-blue-600/20"
-											: "bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200/80 hover:bg-slate-100/70"
+											? "bg-[#134014] text-white shadow-md shadow-[#134014]/25 ring-2 ring-[#134014]/20"
+											: "bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200/80 hover:bg-slate-100/80"
 									}`}
 								>
 									{p.label}
@@ -407,11 +409,11 @@ export default function DashboardAnalyticsSection() {
 							<div className="flex flex-col gap-1.5">
 								<div className="flex items-center justify-between">
 									<label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-										<FaCalendarCheck className="text-emerald-600 text-xs" />
+										<FaCalendarCheck className="text-[#134014] text-xs" />
 										Created / Booking Date:
 									</label>
 									{createdFrom && createdTo && (
-										<span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+										<span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
 											{createdFrom === currentMonthStart && createdTo === currentMonthEnd
 												? "Current Month Active"
 												: `${createdFrom} ~ ${createdTo}`}
@@ -420,7 +422,7 @@ export default function DashboardAnalyticsSection() {
 								</div>
 								<RangePicker
 									size="middle"
-									className="rounded-xl border-slate-200 w-full h-10 shadow-sm"
+									className="rounded-xl border-slate-200 w-full h-10 shadow-xs"
 									placeholder={["Created From", "Created To"]}
 									format="YYYY-MM-DD"
 									value={
@@ -436,11 +438,11 @@ export default function DashboardAnalyticsSection() {
 							<div className="flex flex-col gap-1.5">
 								<div className="flex items-center justify-between">
 									<label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-										<FaCalendarAlt className="text-blue-600 text-xs" />
+										<FaCalendarAlt className="text-teal-700 text-xs" />
 										Appointment Schedule Date:
 									</label>
 									{startDate && endDate ? (
-										<span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+										<span className="text-[11px] font-semibold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
 											{startDate} ~ {endDate}
 										</span>
 									) : (
@@ -449,7 +451,7 @@ export default function DashboardAnalyticsSection() {
 								</div>
 								<RangePicker
 									size="middle"
-									className="rounded-xl border-slate-200 w-full h-10 shadow-sm"
+									className="rounded-xl border-slate-200 w-full h-10 shadow-xs"
 									placeholder={["Schedule From", "Schedule To"]}
 									format="YYYY-MM-DD"
 									value={
@@ -475,7 +477,7 @@ export default function DashboardAnalyticsSection() {
 									setSearch(e.target.value);
 									setPage(0);
 								}}
-								className="rounded-xl border-slate-200 h-10 shadow-sm"
+								className="rounded-xl border-slate-200 h-10 shadow-xs"
 							/>
 
 							{/* Status */}
@@ -488,7 +490,7 @@ export default function DashboardAnalyticsSection() {
 									setStatus(val || "");
 									setPage(0);
 								}}
-								className="w-full rounded-xl h-10 shadow-sm"
+								className="w-full rounded-xl h-10 shadow-xs"
 								options={[
 									{ value: "", label: "All Statuses" },
 									{ value: "Pending", label: "Pending" },
@@ -511,7 +513,7 @@ export default function DashboardAnalyticsSection() {
 									setDoctor(val || "");
 									setPage(0);
 								}}
-								className="w-full rounded-xl h-10 shadow-sm"
+								className="w-full rounded-xl h-10 shadow-xs"
 								options={[
 									{ value: "", label: "All Doctors" },
 									...doctorsList.map((doc: any) => ({
@@ -533,7 +535,7 @@ export default function DashboardAnalyticsSection() {
 									setBranch(val || "");
 									setPage(0);
 								}}
-								className="w-full rounded-xl h-10 shadow-sm"
+								className="w-full rounded-xl h-10 shadow-xs"
 								options={[
 									{ value: "", label: "All Branches" },
 									...branchList.map((b: any) => ({
@@ -549,29 +551,29 @@ export default function DashboardAnalyticsSection() {
 							<div className="flex flex-wrap items-center gap-2">
 								<span className="font-bold text-slate-500">Active Period:</span>
 								{createdFrom && createdTo && (
-									<span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+									<span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
 										Created: {createdFrom} to {createdTo}
 									</span>
 								)}
 								{startDate && endDate && (
-									<span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+									<span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
 										Schedule: {startDate} to {endDate}
 									</span>
 								)}
-								<span className="text-blue-600 font-extrabold bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+								<span className="text-[#134014] font-extrabold bg-[#DEF8DB]/80 px-2.5 py-1 rounded-full border border-emerald-300">
 									{pagination?.totalElements ?? appointmentList.length} Appointments Found
 								</span>
 							</div>
 
 							{/* Navigation View Tabs */}
-							<div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60">
+							<div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200/60">
 								<button
 									type="button"
 									onClick={() => setActiveTab("all")}
 									className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
 										activeTab === "all"
-											? "bg-white text-blue-600 shadow-sm"
-											: "text-slate-500 hover:text-slate-800"
+											? "bg-[#134014] text-white shadow-xs"
+											: "text-slate-600 hover:text-slate-900"
 									}`}
 								>
 									<FaThLarge className="text-xs" />
@@ -582,8 +584,8 @@ export default function DashboardAnalyticsSection() {
 									onClick={() => setActiveTab("distribution")}
 									className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
 										activeTab === "distribution"
-											? "bg-white text-blue-600 shadow-sm"
-											: "text-slate-500 hover:text-slate-800"
+											? "bg-[#134014] text-white shadow-xs"
+											: "text-slate-600 hover:text-slate-900"
 									}`}
 								>
 									<FaChartPie className="text-xs" />
@@ -594,12 +596,24 @@ export default function DashboardAnalyticsSection() {
 									onClick={() => setActiveTab("trends")}
 									className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
 										activeTab === "trends"
-											? "bg-white text-blue-600 shadow-sm"
-											: "text-slate-500 hover:text-slate-800"
+											? "bg-[#134014] text-white shadow-xs"
+											: "text-slate-600 hover:text-slate-900"
 									}`}
 								>
 									<FaLayerGroup className="text-xs" />
 									Daily Trends
+								</button>
+								<button
+									type="button"
+									onClick={() => setActiveTab("table")}
+									className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
+										activeTab === "table"
+											? "bg-[#134014] text-white shadow-xs"
+											: "text-slate-600 hover:text-slate-900"
+									}`}
+								>
+									<FaTable className="text-xs" />
+									Appointments Registry
 								</button>
 							</div>
 						</div>
@@ -607,33 +621,33 @@ export default function DashboardAnalyticsSection() {
 
 					{/* Loading Overlay or Main Content */}
 					{loading && appointmentList.length === 0 ? (
-						<div className="flex flex-col items-center justify-center p-20 bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)]">
+						<div className="flex flex-col items-center justify-center p-20 bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)]">
 							<Spin size="large" />
 							<p className="text-base font-extrabold text-slate-800 mt-5">
-								Fetching live appointment records for current month...
+								Fetching live appointment records for current period...
 							</p>
 							<p className="text-xs font-medium text-slate-400 mt-1">
-								Computing CRM executive distribution and billing metrics
+								Computing CRM executive distribution, workload, and revenue metrics
 							</p>
 						</div>
 					) : (
 						<>
 							{/* Empty state when 0 appointments found */}
 							{appointmentList.length === 0 && !loading && (
-								<div className="flex flex-col items-center justify-center p-14 bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] text-center">
-									<div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 text-2xl mb-3 shadow-inner">
+								<div className="flex flex-col items-center justify-center p-14 bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] text-center">
+									<div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center text-[#134014] text-2xl mb-3 shadow-inner">
 										<FaCalendarAlt />
 									</div>
 									<h3 className="text-lg font-extrabold text-slate-800">
 										No Appointments Found for Current Filter
 									</h3>
-									<p className="text-xs text-slate-400 max-w-md mt-1 mb-5">
+									<p className="text-xs text-slate-500 max-w-md mt-1 mb-5">
 										No appointments match the created date range ({createdFrom || "any"} to {createdTo || "any"}) or schedule date.
 									</p>
 									<button
 										type="button"
 										onClick={() => handleDatePreset("all")}
-										className="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-500/25 hover:bg-blue-700 transition-all cursor-pointer"
+										className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#134014] text-white shadow-md shadow-[#134014]/25 hover:bg-emerald-800 transition-all cursor-pointer"
 									>
 										View All Time Appointments
 									</button>
@@ -657,15 +671,15 @@ export default function DashboardAnalyticsSection() {
 							{(activeTab === "all" || activeTab === "distribution") && appointmentList.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 									{/* Doctor Caseload Breakdown */}
-									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all">
+									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] hover:shadow-[0_15px_35px_-5px_rgba(19,64,20,0.08)] transition-all">
 										<div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
 											<div className="flex items-center gap-2.5">
-												<div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+												<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
 													<FaUserMd className="text-sm" />
 												</div>
 												<h3 className="text-sm font-extrabold text-slate-800">Doctor Caseloads</h3>
 											</div>
-											<span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+											<span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
 												{analyticsData.doctorStats.length} Doctors
 											</span>
 										</div>
@@ -676,27 +690,27 @@ export default function DashboardAnalyticsSection() {
 												analyticsData.doctorStats.slice(0, 8).map((doc, idx) => (
 													<div
 														key={idx}
-														className="flex items-center justify-between p-3 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all"
+														className="flex items-center justify-between p-3 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition-all"
 													>
 														<div className="flex items-center gap-2.5 min-w-0 pr-2">
 															<span
 																className={`w-5 h-5 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0 ${
 																	idx === 0
-																		? "bg-amber-100 text-amber-800"
+																		? "bg-amber-100 text-amber-800 border border-amber-300"
 																		: idx === 1
-																		? "bg-slate-200 text-slate-700"
-																		: "bg-blue-50 text-blue-600"
+																		? "bg-slate-200 text-slate-700 border border-slate-300"
+																		: "bg-emerald-50 text-emerald-800 border border-emerald-200"
 																}`}
 															>
 																{idx + 1}
 															</span>
-															<span className="text-xs font-bold text-slate-800 truncate">{doc.name}</span>
+															<span className="text-xs font-bold text-slate-900 truncate">{doc.name}</span>
 														</div>
 														<div className="flex items-center gap-2 flex-shrink-0">
-															<span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-100/70 text-blue-700">
+															<span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
 																{doc.count} slots
 															</span>
-															<span className="text-xs font-black text-slate-800">
+															<span className="text-xs font-black text-slate-900">
 																৳{doc.fee.toLocaleString()}
 															</span>
 														</div>
@@ -707,10 +721,10 @@ export default function DashboardAnalyticsSection() {
 									</div>
 
 									{/* Appointment Modality & Status */}
-									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all">
+									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] hover:shadow-[0_15px_35px_-5px_rgba(19,64,20,0.08)] transition-all">
 										<div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
 											<div className="flex items-center gap-2.5">
-												<div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+												<div className="w-8 h-8 rounded-xl bg-teal-50 flex items-center justify-center text-teal-700">
 													<FaLaptopMedical className="text-sm" />
 												</div>
 												<h3 className="text-sm font-extrabold text-slate-800">Modality & Channels</h3>
@@ -718,9 +732,9 @@ export default function DashboardAnalyticsSection() {
 											<span className="text-xs font-bold text-slate-400">Distribution</span>
 										</div>
 										<div className="flex flex-col gap-3">
-											<div className="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between shadow-sm">
+											<div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 flex items-center justify-between shadow-xs">
 												<div className="flex items-center gap-3">
-													<div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
+													<div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-700">
 														<FaHospitalUser className="text-base" />
 													</div>
 													<div className="flex flex-col">
@@ -728,14 +742,14 @@ export default function DashboardAnalyticsSection() {
 														<span className="text-[11px] text-slate-400 font-medium">In-Clinic Consultations</span>
 													</div>
 												</div>
-												<span className="text-base font-black text-indigo-700">
+												<span className="text-base font-black text-emerald-800">
 													{analyticsData.typeStats.find((t) => t.name.toLowerCase().includes("face"))?.count || 0}
 												</span>
 											</div>
 
-											<div className="p-4 rounded-2xl bg-cyan-50/50 border border-cyan-100 flex items-center justify-between shadow-sm">
+											<div className="p-4 rounded-2xl bg-teal-50/50 border border-teal-100 flex items-center justify-between shadow-xs">
 												<div className="flex items-center gap-3">
-													<div className="w-9 h-9 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-600">
+													<div className="w-9 h-9 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-700">
 														<FaLaptopMedical className="text-base" />
 													</div>
 													<div className="flex flex-col">
@@ -743,14 +757,14 @@ export default function DashboardAnalyticsSection() {
 														<span className="text-[11px] text-slate-400 font-medium">Remote Video Care</span>
 													</div>
 												</div>
-												<span className="text-base font-black text-cyan-700">
+												<span className="text-base font-black text-teal-800">
 													{analyticsData.typeStats.find((t) => t.name.toLowerCase().includes("online"))?.count || 0}
 												</span>
 											</div>
 
-											<div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-100 flex items-center justify-between">
+											<div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-200/80 flex items-center justify-between">
 												<span className="text-xs font-bold text-slate-700">Intake Status Pulse</span>
-												<span className="text-xs font-black text-amber-700">
+												<span className="text-xs font-black text-amber-800">
 													{analyticsData.statusSummary.confirmed} Confirmed • {analyticsData.statusSummary.pending} Pending
 												</span>
 											</div>
@@ -758,51 +772,80 @@ export default function DashboardAnalyticsSection() {
 									</div>
 
 									{/* Financial Summary */}
-									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all">
+									<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] hover:shadow-[0_15px_35px_-5px_rgba(19,64,20,0.08)] transition-all">
 										<div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
 											<div className="flex items-center gap-2.5">
-												<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+												<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
 													<FaMoneyCheckAlt className="text-sm" />
 												</div>
 												<h3 className="text-sm font-extrabold text-slate-800">Revenue & Billings</h3>
 											</div>
-											<span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+											<span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
 												BDT Ledger
 											</span>
 										</div>
 										<div className="flex flex-col gap-2.5">
 											<div className="flex justify-between items-center text-xs py-1.5 border-b border-slate-100">
 												<span className="text-slate-500 font-medium">Total Consultation Fee:</span>
-												<span className="font-extrabold text-slate-800">
+												<span className="font-extrabold text-slate-900">
 													৳{analyticsData.summary.registrationFee.toLocaleString()}
 												</span>
 											</div>
 											<div className="flex justify-between items-center text-xs py-1.5 border-b border-slate-100">
 												<span className="text-slate-500 font-medium">VAT & Additional Charges:</span>
-												<span className="font-extrabold text-purple-600">
+												<span className="font-extrabold text-indigo-700">
 													৳{analyticsData.summary.expectedMonthly.toLocaleString()}
 												</span>
 											</div>
 											<div className="flex justify-between items-center text-xs py-1.5 border-b border-slate-100">
 												<span className="text-slate-500 font-medium">Total Payable Billings:</span>
-												<span className="font-black text-emerald-600">
+												<span className="font-black text-[#134014]">
 													৳{analyticsData.summary.totalBilling.toLocaleString()}
 												</span>
 											</div>
 											<div className="flex justify-between items-center text-xs py-1.5 border-b border-slate-100">
 												<span className="text-slate-500 font-medium">Paid Collections:</span>
-												<span className="font-extrabold text-blue-600">
+												<span className="font-extrabold text-emerald-700">
 													৳{analyticsData.financials.totalPaid.toLocaleString()}
 												</span>
 											</div>
 											<div className="flex justify-between items-center text-xs py-1">
 												<span className="text-slate-500 font-medium">Total Refunds Processed:</span>
-												<span className="font-extrabold text-rose-500">
+												<span className="font-extrabold text-rose-600">
 													৳{analyticsData.financials.totalRefund.toLocaleString()}
 												</span>
 											</div>
 										</div>
 									</div>
+								</div>
+							)}
+
+							{/* Interactive Appointments Table */}
+							{(activeTab === "all" || activeTab === "table") && (
+								<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] flex flex-col gap-4">
+									<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
+										<div className="flex items-center gap-2.5">
+											<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
+												<FaTable className="text-sm" />
+											</div>
+											<div>
+												<h3 className="text-base font-extrabold text-slate-800">
+													Filtered Appointments Registry
+												</h3>
+												<p className="text-xs text-slate-400 font-medium">
+													Appointments record list matching current date range and filters
+												</p>
+											</div>
+										</div>
+										<span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 self-start sm:self-auto">
+											{pagination?.totalElements ?? appointmentList.length} Appointments Found
+										</span>
+									</div>
+									<AppointmentDashTable
+										appointments={{ appointments: appointmentList, pagination: pagination }}
+										loading={loading}
+										onPageChange={(newPage) => setPage(newPage)}
+									/>
 								</div>
 							)}
 						</>

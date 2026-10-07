@@ -1,16 +1,16 @@
 import { DashboardAnalyticsData, ExecutiveData, DailyApplicationData } from "./sampleDashboardData";
 
 const EXECUTIVE_PALETTES = [
-	{ color: "#2563EB", bgLight: "#EFF6FF" }, // Blue
-	{ color: "#8B5CF6", bgLight: "#F5F3FF" }, // Purple
-	{ color: "#059669", bgLight: "#ECFDF5" }, // Emerald
-	{ color: "#F59E0B", bgLight: "#FFFBEB" }, // Amber
-	{ color: "#EC4899", bgLight: "#FDF2F8" }, // Pink
-	{ color: "#06B6D4", bgLight: "#ECFEFF" }, // Cyan
-	{ color: "#6366F1", bgLight: "#EEF2FF" }, // Indigo
-	{ color: "#14B8A6", bgLight: "#F0FDFA" }, // Teal
-	{ color: "#D97706", bgLight: "#FEF3C7" }, // Amber dark
-	{ color: "#E11D48", bgLight: "#FFE4E6" }, // Rose
+	{ color: "#134014", bgLight: "#DEF8DB" }, // Deep Forest Green (LifeSpring brand)
+	{ color: "#059669", bgLight: "#ECFDF5" }, // Emerald Green
+	{ color: "#0D9488", bgLight: "#F0FDFA" }, // Medical Teal
+	{ color: "#0284C7", bgLight: "#F0F9FF" }, // Clinical Sky Blue
+	{ color: "#4F46E5", bgLight: "#EEF2FF" }, // Indigo
+	{ color: "#D97706", bgLight: "#FFFBEB" }, // Warm Amber
+	{ color: "#166534", bgLight: "#DCFCE7" }, // Forest Leaf
+	{ color: "#7C3AED", bgLight: "#F5F3FF" }, // Soft Violet
+	{ color: "#0891B2", bgLight: "#ECFEFF" }, // Ocean Cyan
+	{ color: "#E11D48", bgLight: "#FFF1F2" }, // Rose / Coral
 ];
 
 export interface TransformedAnalytics extends DashboardAnalyticsData {

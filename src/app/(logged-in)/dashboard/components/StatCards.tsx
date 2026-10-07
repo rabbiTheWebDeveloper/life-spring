@@ -109,9 +109,9 @@ const StatCards = () => {
 			category: "today",
 			text: "Today's Appointment Slots",
 			amount: dashboardStats?.todayAppointmentSlot,
-			icon: <FaCalendarAlt size={22} className="text-blue-600" />,
+			icon: <FaCalendarAlt size={22} className="text-[#134014]" />,
 			badge: "Today",
-			badgeColor: "blue" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "today",
@@ -119,13 +119,13 @@ const StatCards = () => {
 			amount: dashboardStats?.todayConfirmedAppointments,
 			icon: <FaUserCheck size={22} className="text-emerald-600" />,
 			badge: "Confirmed",
-			badgeColor: "green" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "today",
 			text: "Today's Pending Appts",
 			amount: dashboardStats?.todayPendingAppointments,
-			icon: <MdPendingActions size={22} className="text-amber-500" />,
+			icon: <MdPendingActions size={22} className="text-amber-600" />,
 			badge: "Pending",
 			badgeColor: "amber" as const,
 		},
@@ -135,7 +135,7 @@ const StatCards = () => {
 			amount: dashboardStats?.todayVisitedAppointments,
 			icon: <FaCheckCircle size={22} className="text-teal-600" />,
 			badge: "Visited",
-			badgeColor: "green" as const,
+			badgeColor: "teal" as const,
 		},
 		{
 			category: "today",
@@ -143,13 +143,13 @@ const StatCards = () => {
 			amount: `৳${(dashboardStats?.currentDateAppointmentPaymentReceived || 0).toLocaleString()}`,
 			icon: <FaMoneyCheckAlt size={22} className="text-emerald-700" />,
 			badge: "Collections",
-			badgeColor: "green" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "today",
 			text: "Today's Payment Refunded",
 			amount: `৳${(dashboardStats?.currentDateTotalRefundAmount || 0).toLocaleString()}`,
-			icon: <AiOutlineRollback size={22} className="text-rose-500" />,
+			icon: <AiOutlineRollback size={22} className="text-rose-600" />,
 			badge: "Refund",
 			badgeColor: "rose" as const,
 		},
@@ -159,9 +159,9 @@ const StatCards = () => {
 			category: "finance",
 			text: "Total Payment Received",
 			amount: `৳${(dashboardStats?.totalAppointmentPaymentReceived || 0).toLocaleString()}`,
-			icon: <MdOutlinePayments size={22} className="text-emerald-600" />,
+			icon: <MdOutlinePayments size={22} className="text-[#134014]" />,
 			badge: "All-time",
-			badgeColor: "green" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "finance",
@@ -175,7 +175,7 @@ const StatCards = () => {
 			category: "finance",
 			text: "Total VAT Collected",
 			amount: `৳${(dashboardStats?.totalVat || 0).toLocaleString()}`,
-			icon: <FaReceipt size={22} className="text-orange-500" />,
+			icon: <FaReceipt size={22} className="text-indigo-600" />,
 			badge: "Govt VAT",
 			badgeColor: "purple" as const,
 		},
@@ -183,7 +183,7 @@ const StatCards = () => {
 			category: "finance",
 			text: "Total Discount Given",
 			amount: `৳${(dashboardStats?.totalDiscount || 0).toLocaleString()}`,
-			icon: <FaTags size={22} className="text-pink-500" />,
+			icon: <FaTags size={22} className="text-purple-600" />,
 			badge: "Savings",
 			badgeColor: "purple" as const,
 		},
@@ -201,15 +201,15 @@ const StatCards = () => {
 			category: "organization",
 			text: "Active Branches",
 			amount: dashboardStats?.branchCount,
-			icon: <FaClinicMedical size={22} className="text-purple-600" />,
+			icon: <FaClinicMedical size={22} className="text-[#134014]" />,
 			badge: "Centres",
-			badgeColor: "purple" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "organization",
 			text: "Total Doctors",
 			amount: dashboardStats?.doctorCount,
-			icon: <FaUserMd size={22} className="text-cyan-600" />,
+			icon: <FaUserMd size={22} className="text-sky-700" />,
 			badge: "Specialists",
 			badgeColor: "blue" as const,
 		},
@@ -217,17 +217,17 @@ const StatCards = () => {
 			category: "organization",
 			text: "Registered Patients",
 			amount: dashboardStats?.patientCount,
-			icon: <FaUserInjured size={22} className="text-blue-600" />,
-			badge: "Total",
-			badgeColor: "blue" as const,
+			icon: <FaUserInjured size={22} className="text-teal-700" />,
+			badge: "Patients",
+			badgeColor: "teal" as const,
 		},
 		{
 			category: "organization",
 			text: "Active CRM Executives",
 			amount: dashboardStats?.activeExecutiveCount,
 			icon: <FaUserShield size={22} className="text-indigo-600" />,
-			badge: "Staff",
-			badgeColor: "blue" as const,
+			badge: "Active Staff",
+			badgeColor: "purple" as const,
 		},
 		{
 			category: "organization",
@@ -235,7 +235,7 @@ const StatCards = () => {
 			amount: dashboardStats?.totalAppointments,
 			icon: <FaCheckCircle size={22} className="text-emerald-600" />,
 			badge: "Completed",
-			badgeColor: "green" as const,
+			badgeColor: "emerald" as const,
 		},
 		{
 			category: "organization",
@@ -243,15 +243,15 @@ const StatCards = () => {
 			amount: dashboardStats?.totalCompletedAppointments,
 			icon: <FaClipboardCheck size={22} className="text-teal-600" />,
 			badge: "Closed",
-			badgeColor: "green" as const,
+			badgeColor: "teal" as const,
 		},
 		{
 			category: "organization",
 			text: "Total Assigned Executives",
 			amount: dashboardStats?.executiveCount,
-			icon: <FaUserTie size={22} className="text-pink-600" />,
+			icon: <FaUserTie size={22} className="text-slate-700" />,
 			badge: "All Staff",
-			badgeColor: "purple" as const,
+			badgeColor: "blue" as const,
 		},
 	];
 
@@ -265,26 +265,26 @@ const StatCards = () => {
 			<RolePermissionChecker tag="dashboard" name="list">
 				<div className="w-full flex flex-col gap-3">
 					{/* Header bar for Stats with category switcher */}
-					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/80 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-slate-200/70 shadow-sm">
-						<div className="flex items-center gap-2">
-							<span className="w-2 h-5 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full" />
-							<span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/95 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(19,64,20,0.04)]">
+						<div className="flex items-center gap-2.5">
+							<span className="w-2.5 h-5 bg-gradient-to-b from-[#134014] to-emerald-600 rounded-full" />
+							<span className="text-xs font-black text-slate-800 uppercase tracking-wider">
 								Overall Hospital Overview
 							</span>
-							<span className="text-[11px] font-semibold text-slate-400">
-								({filteredCards.length} KPIs)
+							<span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+								{filteredCards.length} KPIs
 							</span>
 						</div>
 
 						{/* Quick category pills */}
-						<div className="flex items-center bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto text-xs">
+						<div className="flex items-center bg-slate-100/90 p-1 rounded-xl self-start sm:self-auto text-xs border border-slate-200/60">
 							<button
 								type="button"
 								onClick={() => setActiveCategory("all")}
-								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+								className={`px-3.5 py-1.5 font-bold rounded-lg transition-all ${
 									activeCategory === "all"
-										? "bg-white text-blue-600 shadow-sm"
-										: "text-slate-500 hover:text-slate-800"
+										? "bg-[#134014] text-white shadow-xs"
+										: "text-slate-600 hover:text-slate-900"
 								}`}
 							>
 								All KPIs
@@ -292,10 +292,10 @@ const StatCards = () => {
 							<button
 								type="button"
 								onClick={() => setActiveCategory("today")}
-								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+								className={`px-3.5 py-1.5 font-bold rounded-lg transition-all ${
 									activeCategory === "today"
-										? "bg-white text-emerald-600 shadow-sm"
-										: "text-slate-500 hover:text-slate-800"
+										? "bg-[#134014] text-white shadow-xs"
+										: "text-slate-600 hover:text-slate-900"
 								}`}
 							>
 								Today's Pulse
@@ -303,10 +303,10 @@ const StatCards = () => {
 							<button
 								type="button"
 								onClick={() => setActiveCategory("finance")}
-								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+								className={`px-3.5 py-1.5 font-bold rounded-lg transition-all ${
 									activeCategory === "finance"
-										? "bg-white text-purple-600 shadow-sm"
-										: "text-slate-500 hover:text-slate-800"
+										? "bg-[#134014] text-white shadow-xs"
+										: "text-slate-600 hover:text-slate-900"
 								}`}
 							>
 								Revenue
@@ -314,10 +314,10 @@ const StatCards = () => {
 							<button
 								type="button"
 								onClick={() => setActiveCategory("organization")}
-								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+								className={`px-3.5 py-1.5 font-bold rounded-lg transition-all ${
 									activeCategory === "organization"
-										? "bg-white text-indigo-600 shadow-sm"
-										: "text-slate-500 hover:text-slate-800"
+										? "bg-[#134014] text-white shadow-xs"
+										: "text-slate-600 hover:text-slate-900"
 								}`}
 							>
 								Capacity

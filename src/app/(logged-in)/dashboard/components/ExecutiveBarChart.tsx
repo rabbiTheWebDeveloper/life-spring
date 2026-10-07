@@ -109,8 +109,8 @@ export default function ExecutiveBarChart({ executives }: Props) {
 						data: completedData,
 						itemStyle: {
 							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-								{ offset: 0, color: "#3b82f6" },
-								{ offset: 1, color: "#1d4ed8" },
+								{ offset: 0, color: "#22c55e" },
+								{ offset: 1, color: "#134014" },
 							]),
 							borderRadius: [0, 0, 0, 0],
 						},
@@ -148,7 +148,7 @@ export default function ExecutiveBarChart({ executives }: Props) {
 						return `
 							<div style="font-family: inherit; padding: 6px 10px; font-size: 13px;">
 								<div style="font-weight: 800; color: #0f172a; margin-bottom: 4px; font-size: 14px;">${exec.name}</div>
-								<div style="color: #059669; font-weight: 800; font-size: 13px;">Total Revenue: ৳${exec.totalAmount.toLocaleString()} BDT</div>
+								<div style="color: #134014; font-weight: 800; font-size: 13px;">Total Revenue: ৳${exec.totalAmount.toLocaleString()} BDT</div>
 								<div style="color: #64748b; font-size: 11px; margin-top: 4px;">Admission: ৳${exec.admissionFee.toLocaleString()}</div>
 								<div style="color: #64748b; font-size: 11px;">Monthly Fees: ৳${exec.monthlyFee.toLocaleString()}</div>
 							</div>
@@ -210,8 +210,8 @@ export default function ExecutiveBarChart({ executives }: Props) {
 						data: admissionData,
 						itemStyle: {
 							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-								{ offset: 0, color: "#a855f7" },
-								{ offset: 1, color: "#7e22ce" },
+								{ offset: 0, color: "#14b8a6" },
+								{ offset: 1, color: "#0f766e" },
 							]),
 							borderRadius: [6, 6, 0, 0],
 						},
@@ -223,8 +223,8 @@ export default function ExecutiveBarChart({ executives }: Props) {
 						data: revenueData,
 						itemStyle: {
 							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-								{ offset: 0, color: "#10b981" },
-								{ offset: 1, color: "#047857" },
+								{ offset: 0, color: "#22c55e" },
+								{ offset: 1, color: "#134014" },
 							]),
 							borderRadius: [6, 6, 0, 0],
 						},
@@ -243,11 +243,11 @@ export default function ExecutiveBarChart({ executives }: Props) {
 	}, [executives, viewMode]);
 
 	return (
-		<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] flex flex-col justify-between hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all duration-200">
+		<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] flex flex-col justify-between hover:shadow-[0_15px_35px_-5px_rgba(19,64,20,0.08)] transition-all duration-200">
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 border-b border-slate-100 pb-4">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+						<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
 							<FaUserTie className="text-sm" />
 						</div>
 						<h3 className="text-base font-extrabold text-slate-800">
@@ -260,14 +260,14 @@ export default function ExecutiveBarChart({ executives }: Props) {
 				</div>
 
 				{/* Toggle Switch */}
-				<div className="flex items-center bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto border border-slate-200/50">
+				<div className="flex items-center bg-slate-100/90 p-1 rounded-xl self-start sm:self-auto border border-slate-200/60">
 					<button
 						type="button"
 						onClick={() => setViewMode("count")}
 						className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
 							viewMode === "count"
-								? "bg-white text-blue-600 shadow-sm"
-								: "text-slate-500 hover:text-slate-700"
+								? "bg-[#134014] text-white shadow-xs"
+								: "text-slate-600 hover:text-slate-900"
 						}`}
 					>
 						<FaChartBar className="text-xs" />
@@ -278,8 +278,8 @@ export default function ExecutiveBarChart({ executives }: Props) {
 						onClick={() => setViewMode("revenue")}
 						className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
 							viewMode === "revenue"
-								? "bg-white text-emerald-600 shadow-sm"
-								: "text-slate-500 hover:text-slate-700"
+								? "bg-[#134014] text-white shadow-xs"
+								: "text-slate-600 hover:text-slate-900"
 						}`}
 					>
 						<FaMoneyBillWave className="text-xs" />

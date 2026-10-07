@@ -107,12 +107,12 @@ export default function DailyApplicationGraph({ data }: Props) {
 					smooth: true,
 					showSymbol: true,
 					symbolSize: 7,
-					itemStyle: { color: "#2563eb" },
-					lineStyle: { width: 3, color: "#2563eb" },
+					itemStyle: { color: "#134014" },
+					lineStyle: { width: 3, color: "#134014" },
 					areaStyle: {
 						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: "rgba(37, 99, 235, 0.28)" },
-							{ offset: 1, color: "rgba(37, 99, 235, 0.0)" },
+							{ offset: 0, color: "rgba(19, 64, 20, 0.22)" },
+							{ offset: 1, color: "rgba(19, 64, 20, 0.0)" },
 						]),
 					},
 					data: appValues,
@@ -127,7 +127,7 @@ export default function DailyApplicationGraph({ data }: Props) {
 					lineStyle: { width: 2.5, color: "#059669" },
 					areaStyle: {
 						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: "rgba(5, 150, 105, 0.2)" },
+							{ offset: 0, color: "rgba(5, 150, 105, 0.18)" },
 							{ offset: 1, color: "rgba(5, 150, 105, 0.0)" },
 						]),
 					},
@@ -140,8 +140,8 @@ export default function DailyApplicationGraph({ data }: Props) {
 					barWidth: 14,
 					itemStyle: {
 						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: "rgba(147, 51, 234, 0.65)" },
-							{ offset: 1, color: "rgba(147, 51, 234, 0.2)" },
+							{ offset: 0, color: "rgba(13, 148, 136, 0.75)" },
+							{ offset: 1, color: "rgba(13, 148, 136, 0.2)" },
 						]),
 						borderRadius: [4, 4, 0, 0],
 					},
@@ -159,12 +159,12 @@ export default function DailyApplicationGraph({ data }: Props) {
 	}, [filteredData]);
 
 	return (
-		<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] flex flex-col gap-5 hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all duration-200">
+		<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] flex flex-col gap-5 hover:shadow-[0_15px_35px_-5px_rgba(19,64,20,0.08)] transition-all duration-200">
 			{/* Header with Title & Range Filter */}
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+						<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
 							<FaChartLine className="text-sm" />
 						</div>
 						<h3 className="text-base font-extrabold text-slate-800">
@@ -176,14 +176,14 @@ export default function DailyApplicationGraph({ data }: Props) {
 					</p>
 				</div>
 
-				<div className="flex items-center bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto border border-slate-200/50">
+				<div className="flex items-center bg-slate-100/90 p-1 rounded-xl self-start sm:self-auto border border-slate-200/60">
 					<button
 						type="button"
 						onClick={() => setTimeRange("all")}
 						className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
 							timeRange === "all"
-								? "bg-white text-blue-600 shadow-sm"
-								: "text-slate-500 hover:text-slate-700"
+								? "bg-[#134014] text-white shadow-xs"
+								: "text-slate-600 hover:text-slate-900"
 						}`}
 					>
 						Period View
@@ -193,8 +193,8 @@ export default function DailyApplicationGraph({ data }: Props) {
 						onClick={() => setTimeRange("14d")}
 						className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
 							timeRange === "14d"
-								? "bg-white text-blue-600 shadow-sm"
-								: "text-slate-500 hover:text-slate-700"
+								? "bg-[#134014] text-white shadow-xs"
+								: "text-slate-600 hover:text-slate-900"
 						}`}
 					>
 						14 Days
@@ -204,8 +204,8 @@ export default function DailyApplicationGraph({ data }: Props) {
 						onClick={() => setTimeRange("7d")}
 						className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
 							timeRange === "7d"
-								? "bg-white text-blue-600 shadow-sm"
-								: "text-slate-500 hover:text-slate-700"
+								? "bg-[#134014] text-white shadow-xs"
+								: "text-slate-600 hover:text-slate-900"
 						}`}
 					>
 						7 Days
@@ -219,7 +219,7 @@ export default function DailyApplicationGraph({ data }: Props) {
 					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
 						Applications
 					</span>
-					<span className="text-xl font-black text-blue-600">{totalApps}</span>
+					<span className="text-xl font-black text-[#134014]">{totalApps}</span>
 				</div>
 				<div className="flex flex-col">
 					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
@@ -237,7 +237,7 @@ export default function DailyApplicationGraph({ data }: Props) {
 					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
 						Period Revenue
 					</span>
-					<span className="text-xl font-black text-purple-600">
+					<span className="text-xl font-black text-teal-700">
 						৳{totalRevenue.toLocaleString()}
 					</span>
 				</div>

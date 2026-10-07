@@ -107,12 +107,12 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 			{/* Top Metric Summary Cards */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
 				{/* 1. Assigned to CRM In-charge */}
-				<div className="relative bg-gradient-to-br from-blue-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-blue-100/90 shadow-[0_4px_16px_-4px_rgba(37,99,235,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(37,99,235,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
+				<div className="relative bg-gradient-to-br from-teal-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-teal-100/90 shadow-[0_4px_16px_-4px_rgba(13,148,136,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(13,148,136,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
 					<div className="flex justify-between items-start mb-3">
-						<span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 bg-blue-100/70 px-2.5 py-1 rounded-full">
+						<span className="text-[11px] font-bold uppercase tracking-wider text-teal-800 bg-teal-100/80 px-2.5 py-1 rounded-full border border-teal-200/60">
 							CRM Workload
 						</span>
-						<div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+						<div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-700">
 							<FaUserCheck className="text-base" />
 						</div>
 					</div>
@@ -120,7 +120,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 						<div className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
 							{summary.totalAssigned}
 						</div>
-						<div className="text-xs font-semibold text-slate-400 mt-2">
+						<div className="text-xs font-semibold text-slate-500 mt-2">
 							{summary.assignedLabel}
 						</div>
 					</div>
@@ -129,10 +129,10 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 				{/* 2. One-time registration */}
 				<div className="relative bg-gradient-to-br from-emerald-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-emerald-100/90 shadow-[0_4px_16px_-4px_rgba(5,150,105,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(5,150,105,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
 					<div className="flex justify-between items-start mb-3">
-						<span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100/70 px-2.5 py-1 rounded-full">
+						<span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-full border border-emerald-200/60">
 							Base Intake
 						</span>
-						<div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+						<div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-700">
 							<FaCoins className="text-base" />
 						</div>
 					</div>
@@ -141,19 +141,19 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 							৳{summary.registrationFee.toLocaleString()}{" "}
 							<span className="text-sm font-bold text-slate-500">{summary.currency}</span>
 						</div>
-						<div className="text-xs font-semibold text-slate-400 mt-2">
+						<div className="text-xs font-semibold text-slate-500 mt-2">
 							{summary.registrationLabel}
 						</div>
 					</div>
 				</div>
 
 				{/* 3. Expected monthly billing */}
-				<div className="relative bg-gradient-to-br from-purple-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-purple-100/90 shadow-[0_4px_16px_-4px_rgba(147,51,234,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(147,51,234,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
+				<div className="relative bg-gradient-to-br from-amber-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-amber-100/90 shadow-[0_4px_16px_-4px_rgba(217,119,6,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(217,119,6,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
 					<div className="flex justify-between items-start mb-3">
-						<span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 bg-purple-100/70 px-2.5 py-1 rounded-full">
+						<span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-2.5 py-1 rounded-full border border-amber-200/60">
 							VAT & Billings
 						</span>
-						<div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-600">
+						<div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-700">
 							<FaReceipt className="text-base" />
 						</div>
 					</div>
@@ -162,28 +162,28 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 							৳{summary.expectedMonthly.toLocaleString()}{" "}
 							<span className="text-sm font-bold text-slate-500">{summary.currency}</span>
 						</div>
-						<div className="text-xs font-semibold text-slate-400 mt-2">
+						<div className="text-xs font-semibold text-slate-500 mt-2">
 							{summary.monthlyLabel}
 						</div>
 					</div>
 				</div>
 
 				{/* 4. Total Admission + Monthly */}
-				<div className="relative bg-gradient-to-br from-indigo-50/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-indigo-100/90 shadow-[0_4px_16px_-4px_rgba(79,70,229,0.06)] hover:shadow-[0_10px_25px_-5px_rgba(79,70,229,0.12)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
+				<div className="relative bg-gradient-to-br from-[#DEF8DB]/60 via-white to-white rounded-2xl p-5 sm:p-6 border border-emerald-200/90 shadow-[0_4px_16px_-4px_rgba(19,64,20,0.08)] hover:shadow-[0_10px_25px_-5px_rgba(19,64,20,0.14)] hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between overflow-hidden">
 					<div className="flex justify-between items-start mb-3">
-						<span className="text-[11px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100/70 px-2.5 py-1 rounded-full">
+						<span className="text-[11px] font-bold uppercase tracking-wider text-[#134014] bg-[#DEF8DB] px-2.5 py-1 rounded-full border border-emerald-300">
 							Total Payable
 						</span>
-						<div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
+						<div className="w-10 h-10 rounded-xl bg-[#134014]/10 flex items-center justify-center text-[#134014]">
 							<FaFileInvoiceDollar className="text-base" />
 						</div>
 					</div>
 					<div>
-						<div className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+						<div className="text-3xl lg:text-4xl font-black text-[#134014] tracking-tight">
 							৳{summary.totalBilling.toLocaleString()}{" "}
 							<span className="text-sm font-bold text-slate-500">{summary.currency}</span>
 						</div>
-						<div className="text-xs font-semibold text-slate-400 mt-2">
+						<div className="text-xs font-semibold text-slate-500 mt-2">
 							{summary.totalBillingLabel}
 						</div>
 					</div>
@@ -191,7 +191,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 			</div>
 
 			{/* Main Donut & List Section */}
-			<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)]">
+			<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)]">
 				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
 					{/* Left: Donut Chart with Center Label */}
 					<div className="flex flex-col items-center justify-center relative w-full lg:w-[38%] min-w-[280px]">
@@ -202,22 +202,22 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 								<span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
 									TOTAL INTAKE
 								</span>
-								<span className="text-[28px] font-black text-slate-900 tracking-tight leading-none mt-1">
+								<span className="text-[30px] font-black text-slate-900 tracking-tight leading-none mt-1">
 									{totalCount}
 								</span>
 								<span className="text-[11px] font-bold text-slate-500 mt-0.5">
 									{totalCount === 1 ? "Appointment" : "Appointments"}
 								</span>
-								<span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full mt-2 border border-blue-200">
-									{executives.length} {executives.length === 1 ? "Staff" : "Staff Members"}
+								<span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full mt-2 border border-emerald-200">
+									{executives.length} {executives.length === 1 ? "Staff Member" : "Staff Members"}
 								</span>
 							</div>
 						</div>
 
 						{/* Subtitle directly below donut */}
-						<p className="text-xs font-medium text-slate-400 mt-4 tracking-normal text-center">
-							Distribution of workload among{" "}
-							<span className="text-slate-800 font-bold">CRM Executives & In-Charge</span>
+						<p className="text-xs font-medium text-slate-500 mt-4 tracking-normal text-center">
+							Workload allocation among{" "}
+							<span className="text-[#134014] font-bold">CRM Executives & In-Charge</span>
 						</p>
 					</div>
 
@@ -235,7 +235,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 							executives.map((exec) => (
 								<div
 									key={exec.id}
-									className="group flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 rounded-2xl border border-slate-100 hover:border-slate-300/80 bg-white hover:bg-slate-50/80 transition-all duration-200 gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+									className="group flex flex-col sm:flex-row sm:items-center justify-between px-5 py-4 rounded-2xl border border-slate-100 hover:border-emerald-300 bg-white hover:bg-emerald-50/20 transition-all duration-200 gap-4 shadow-xs hover:shadow-md hover:-translate-y-0.5"
 								>
 									{/* Left: Color Dot, Avatar, Name & Email */}
 									<div className="flex items-center gap-3.5 min-w-[220px]">
@@ -247,7 +247,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 
 										{/* Avatar initial badge */}
 										<div
-											className="w-10 h-10 rounded-2xl flex items-center justify-center font-black text-sm flex-shrink-0 shadow-sm ring-2 ring-white"
+											className="w-10 h-10 rounded-2xl flex items-center justify-center font-black text-sm flex-shrink-0 shadow-xs ring-2 ring-white"
 											style={{
 												backgroundColor: exec.bgLight,
 												color: exec.color,
@@ -258,7 +258,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 
 										{/* Name and Email */}
 										<div className="flex flex-col min-w-0">
-											<span className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+											<span className="text-sm font-bold text-slate-900 group-hover:text-[#134014] transition-colors">
 												{exec.name}
 											</span>
 											<span className="text-xs text-slate-400 truncate">
@@ -285,7 +285,7 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 												{exec.count} {exec.count === 1 ? "Appt" : "Appts"}
 											</span>
 										</div>
-										<span className="text-xs text-slate-400 font-semibold mt-0.5">
+										<span className="text-xs text-slate-500 font-semibold mt-0.5">
 											{exec.sharePercentage}% total share
 										</span>
 									</div>
@@ -297,10 +297,10 @@ export default function ExecutiveDistributionCard({ data }: Props) {
 											<span className="text-xs font-bold text-slate-500">BDT</span>
 										</span>
 										<div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 mt-0.5">
-											<span className="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200">
+											<span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 rounded-md border border-emerald-200">
 												Adm: ৳{exec.admissionFee.toLocaleString()}
 											</span>
-											<span className="px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-200">
+											<span className="px-2 py-0.5 bg-teal-50 text-teal-800 rounded-md border border-teal-200">
 												Mo: ৳{exec.monthlyFee.toLocaleString()}
 											</span>
 										</div>

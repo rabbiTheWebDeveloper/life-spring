@@ -92,8 +92,8 @@ const AppointmentDashTable = ({ appointments, url = "/dashboard", loading = fals
 				<span
 					className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold capitalize ${
 						appointment.appointmentType === "online"
-							? "bg-purple-50 text-purple-700 border border-purple-200"
-							: "bg-teal-50 text-teal-700 border border-teal-200"
+							? "bg-teal-50 text-teal-800 border border-teal-200"
+							: "bg-emerald-50 text-emerald-800 border border-emerald-200"
 					}`}
 				>
 					{appointment.appointmentType || "In-person"}
@@ -111,10 +111,10 @@ const AppointmentDashTable = ({ appointments, url = "/dashboard", loading = fals
 					<span
 						className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
 							isPaid
-								? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+								? "bg-emerald-50 text-emerald-800 border border-emerald-200"
 								: isPartial
-								? "bg-amber-50 text-amber-700 border border-amber-200"
-								: "bg-cyan-50 text-cyan-700 border border-cyan-200"
+								? "bg-amber-50 text-amber-800 border border-amber-200"
+								: "bg-rose-50 text-rose-800 border border-rose-200"
 						}`}
 					>
 						{Payments.getStatusValue(appointment)}
@@ -134,12 +134,12 @@ const AppointmentDashTable = ({ appointments, url = "/dashboard", loading = fals
 					<span
 						className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
 							isComp
-								? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+								? "bg-emerald-50 text-emerald-800 border border-emerald-200"
 								: isSched
-								? "bg-blue-50 text-blue-700 border border-blue-200"
+								? "bg-teal-50 text-teal-800 border border-teal-200"
 								: isCanc
-								? "bg-rose-50 text-rose-700 border border-rose-200"
-								: "bg-amber-50 text-amber-700 border border-amber-200"
+								? "bg-rose-50 text-rose-800 border border-rose-200"
+								: "bg-amber-50 text-amber-800 border border-amber-200"
 						}`}
 					>
 						{appointment.status || "Pending"}
@@ -156,7 +156,7 @@ const AppointmentDashTable = ({ appointments, url = "/dashboard", loading = fals
 					<Tooltip placement="top" title="View Appointment Details">
 						<button
 							type="button"
-							className="w-8 h-8 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white flex items-center justify-center transition-all shadow-sm cursor-pointer border border-blue-100 hover:border-blue-600"
+							className="w-8 h-8 rounded-xl bg-emerald-50 hover:bg-[#134014] text-[#134014] hover:text-white flex items-center justify-center transition-all shadow-xs cursor-pointer border border-emerald-200 hover:border-[#134014]"
 							onClick={() => router.push(`/appointment/${record.id}`)}
 						>
 							<SlEye size={14} />

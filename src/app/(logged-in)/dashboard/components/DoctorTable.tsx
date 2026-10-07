@@ -103,22 +103,22 @@ const DoctorTable = ({ doctors,url }: Props) => {
 				// href={`${doctor.id}/update`}
 				<div className="flex justify-start items-center gap-x-2 ">
 					<RolePermissionChecker tag="doctor" name="view">
-						<Tooltip placement="top" title={"View details"} color={"#2db7f5"}>
+						<Tooltip placement="top" title={"View details"} color={"#134014"}>
 							<div
-								className="bg-blue-500 flex items-center justify-center rounded-md px-1 py-1 cursor-pointer text-white"
+								className="bg-[#134014] hover:bg-emerald-700 flex items-center justify-center rounded-lg p-1.5 cursor-pointer text-white transition-all shadow-xs"
 								onClick={() => router.push(`/doctor/${id}`)}
 							>
-								<SlEye size={18}/>
+								<SlEye size={16}/>
 							</div>
 						</Tooltip>
 					</RolePermissionChecker>
 					<RolePermissionChecker tag="doctor" name="update">
-						<Tooltip placement="top" title={"Edit details"} color={"#2db7f5"}>
+						<Tooltip placement="top" title={"Edit details"} color={"#134014"}>
 							<div
-								className="bg-teal-500 flex items-center justify-center rounded-md px-1 py-1 cursor-pointer text-white"
+								className="bg-emerald-600 hover:bg-emerald-700 flex items-center justify-center rounded-lg p-1.5 cursor-pointer text-white transition-all shadow-xs"
 								onClick={() => router.push(`/doctor/${id}/update`)}
 							>
-								<CiEdit size={18} />
+								<CiEdit size={16} />
 							</div>
 						</Tooltip>
 					</RolePermissionChecker>
