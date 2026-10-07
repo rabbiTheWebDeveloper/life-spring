@@ -2,16 +2,12 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { DatePicker, Select, Input, Tooltip, message, Spin, Tag } from "antd";
+import { Tooltip, message, Spin } from "antd";
 import ExecutiveDistributionCard from "./ExecutiveDistributionCard";
 import ExecutiveBarChart from "./ExecutiveBarChart";
 import DailyApplicationGraph from "./DailyApplicationGraph";
-import AppointmentDashTable from "./AppointmentDashTable";
 import { transformAppointmentsToAnalytics } from "../data/appointmentDataTransformer";
 import { getAppointmentList, getPaymentSummary } from "@/app/(logged-in)/appointment/actions/GetAppointmentList";
-import { getDoctorList } from "@/app/(logged-in)/appointment/actions/getDoctorList";
-import { getBranchList } from "@/app/(logged-in)/branch/actions/GetBranchList";
-import { getOptions } from "@/app/actions/getOptions";
 import RolePermissionChecker from "@/app/components/rolepermission/HandleRolePermission";
 import SidebarPermission from "@/app/components/sidebar/SidebarPermisson";
 import {
@@ -22,21 +18,10 @@ import {
 	FaLaptopMedical,
 	FaHospitalUser,
 	FaMoneyCheckAlt,
-	FaSearch,
 	FaRedo,
-	FaFilter,
 	FaCalendarAlt,
-	FaCalendarCheck,
 	FaTimes,
-	FaCheckCircle,
-	FaCoins,
-	FaPercent,
-	FaFileInvoice,
-	FaUserTie,
-	FaTable,
 } from "react-icons/fa";
-
-const { RangePicker } = DatePicker;
 
 export default function DashboardAnalyticsSection() {
 	// Current month boundaries
@@ -45,7 +30,7 @@ export default function DashboardAnalyticsSection() {
 
 	// Loading & Active Tab
 	const [loading, setLoading] = useState<boolean>(true);
-	const [activeTab, setActiveTab] = useState<"all" | "distribution" | "trends" | "table">("all");
+	const [activeTab, setActiveTab] = useState<"all" | "distribution" | "trends">("all");
 
 	// Filter state (matches API parameters)
 	// By default: created date is set to current month!
@@ -79,37 +64,6 @@ export default function DashboardAnalyticsSection() {
 	const [appointmentList, setAppointmentList] = useState<any[]>([]);
 	const [pagination, setPagination] = useState<any>(null);
 	const [summary, setSummary] = useState<any>(null);
-
-	// Dropdown Options
-	const [doctorsList, setDoctorsList] = useState<any[]>([]);
-	const [branchList, setBranchList] = useState<any[]>([]);
-	const [statusOptions, setStatusOptions] = useState<any[]>([]);
-
-	// Initial fetch of meta dropdown options
-	useEffect(() => {
-		const loadOptions = async () => {
-			try {
-				const [opts, docRes, branchRes] = await Promise.allSettled([
-					getOptions(),
-					getDoctorList(0),
-					getBranchList(0, "", 50),
-				]);
-
-				if (opts.status === "fulfilled" && opts.value?.appointmentStatus) {
-					setStatusOptions(opts.value.appointmentStatus);
-				}
-				if (docRes.status === "fulfilled" && docRes.value?.success && docRes.value?.data?.doctors) {
-					setDoctorsList(docRes.value.data.doctors);
-				}
-				if (branchRes.status === "fulfilled" && branchRes.value?.success && branchRes.value?.data?.data) {
-					setBranchList(branchRes.value.data.data);
-				}
-			} catch (e) {
-				console.error("Failed to load filter metadata", e);
-			}
-		};
-		loadOptions();
-	}, []);
 
 	// Main Fetch Function as requested
 	const fetchData = async () => {
@@ -264,62 +218,18 @@ export default function DashboardAnalyticsSection() {
 		}
 	};
 
-	// Created Date RangePicker change
-	const handleCreatedRangeChange = (dates: any) => {
-		setPage(0);
-		setDatePreset("custom");
-		if (dates && dates[0] && dates[1]) {
-			setCreatedFrom(dates[0].format("YYYY-MM-DD"));
-			setCreatedTo(dates[1].format("YYYY-MM-DD"));
-		} else {
-			setCreatedFrom("");
-			setCreatedTo("");
-		}
-	};
-
-	// Schedule Date RangePicker change
-	const handleScheduleRangeChange = (dates: any) => {
-		setPage(0);
-		setDatePreset("custom");
-		if (dates && dates[0] && dates[1]) {
-			setStartDate(dates[0].format("YYYY-MM-DD"));
-			setEndDate(dates[1].format("YYYY-MM-DD"));
-		} else {
-			setStartDate("");
-			setEndDate("");
-		}
-	};
-
-	// Reset all filters (resets back to current month create date)
+	// Reset date filters (resets back to current month create date)
 	const resetAllFilters = () => {
 		setDatePreset("month-created");
 		setCreatedFrom(currentMonthStart);
 		setCreatedTo(currentMonthEnd);
 		setStartDate("");
 		setEndDate("");
-		setStatus("");
-		setSearch("");
-		setBranch("");
-		setDoctor("");
-		setAppointmentType("");
-		setPaymentStatus("");
-		setExecutive("");
 		setTrendGroupBy("createdAt");
 		setPage(0);
 	};
 
-	const hasActiveFilters = Boolean(
-		status ||
-		search ||
-		branch ||
-		doctor ||
-		appointmentType ||
-		paymentStatus ||
-		executive ||
-		startDate ||
-		endDate ||
-		(createdFrom !== currentMonthStart || createdTo !== currentMonthEnd)
-	);
+	const hasActiveFilters = datePreset !== "month-created";
 
 	return (
 		<SidebarPermission tag="dashboard">
@@ -403,149 +313,6 @@ export default function DashboardAnalyticsSection() {
 							))}
 						</div>
 
-						{/* Dual Date Filter Row: Created Date + Schedule Date */}
-						<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-slate-50/70 p-4 sm:p-5 rounded-2xl border border-slate-200/60">
-							{/* 1. Created Date Filter (Booking Date) */}
-							<div className="flex flex-col gap-1.5">
-								<div className="flex items-center justify-between">
-									<label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-										<FaCalendarCheck className="text-[#134014] text-xs" />
-										Created / Booking Date:
-									</label>
-									{createdFrom && createdTo && (
-										<span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-											{createdFrom === currentMonthStart && createdTo === currentMonthEnd
-												? "Current Month Active"
-												: `${createdFrom} ~ ${createdTo}`}
-										</span>
-									)}
-								</div>
-								<RangePicker
-									size="middle"
-									className="rounded-xl border-slate-200 w-full h-10 shadow-xs"
-									placeholder={["Created From", "Created To"]}
-									format="YYYY-MM-DD"
-									value={
-										createdFrom && createdTo
-											? [dayjs(createdFrom), dayjs(createdTo)]
-											: null
-									}
-									onChange={handleCreatedRangeChange}
-								/>
-							</div>
-
-							{/* 2. Schedule Date Filter (Appointment Date) */}
-							<div className="flex flex-col gap-1.5">
-								<div className="flex items-center justify-between">
-									<label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-										<FaCalendarAlt className="text-teal-700 text-xs" />
-										Appointment Schedule Date:
-									</label>
-									{startDate && endDate ? (
-										<span className="text-[11px] font-semibold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
-											{startDate} ~ {endDate}
-										</span>
-									) : (
-										<span className="text-[11px] text-slate-400 font-medium">Any Schedule Date</span>
-									)}
-								</div>
-								<RangePicker
-									size="middle"
-									className="rounded-xl border-slate-200 w-full h-10 shadow-xs"
-									placeholder={["Schedule From", "Schedule To"]}
-									format="YYYY-MM-DD"
-									value={
-										startDate && endDate
-											? [dayjs(startDate), dayjs(endDate)]
-											: null
-									}
-									onChange={handleScheduleRangeChange}
-								/>
-							</div>
-						</div>
-
-						{/* Secondary Filters: Search, Status, Doctor, Branch */}
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-							{/* Search */}
-							<Input
-								size="middle"
-								prefix={<FaSearch className="text-slate-400 text-xs mr-1.5" />}
-								placeholder="Search patient, phone..."
-								allowClear
-								value={search}
-								onChange={(e) => {
-									setSearch(e.target.value);
-									setPage(0);
-								}}
-								className="rounded-xl border-slate-200 h-10 shadow-xs"
-							/>
-
-							{/* Status */}
-							<Select
-								size="middle"
-								placeholder="Appointment Status"
-								allowClear
-								value={status || undefined}
-								onChange={(val) => {
-									setStatus(val || "");
-									setPage(0);
-								}}
-								className="w-full rounded-xl h-10 shadow-xs"
-								options={[
-									{ value: "", label: "All Statuses" },
-									{ value: "Pending", label: "Pending" },
-									{ value: "Confirmed", label: "Confirmed" },
-									{ value: "Completed", label: "Completed" },
-									{ value: "Cancelled", label: "Cancelled" },
-									...statusOptions.map((opt) => ({ value: opt.value, label: opt.label })),
-								]}
-							/>
-
-							{/* Doctor */}
-							<Select
-								size="middle"
-								placeholder="Filter Doctor"
-								allowClear
-								showSearch
-								optionFilterProp="label"
-								value={doctor || undefined}
-								onChange={(val) => {
-									setDoctor(val || "");
-									setPage(0);
-								}}
-								className="w-full rounded-xl h-10 shadow-xs"
-								options={[
-									{ value: "", label: "All Doctors" },
-									...doctorsList.map((doc: any) => ({
-										value: String(doc.id),
-										label: doc.name,
-									})),
-								]}
-							/>
-
-							{/* Branch */}
-							<Select
-								size="middle"
-								placeholder="Filter Branch"
-								allowClear
-								showSearch
-								optionFilterProp="label"
-								value={branch || undefined}
-								onChange={(val) => {
-									setBranch(val || "");
-									setPage(0);
-								}}
-								className="w-full rounded-xl h-10 shadow-xs"
-								options={[
-									{ value: "", label: "All Branches" },
-									...branchList.map((b: any) => ({
-										value: String(b.id),
-										label: b.name,
-									})),
-								]}
-							/>
-						</div>
-
 						{/* Filter Feedback Bar & View Switcher */}
 						<div className="flex flex-wrap items-center justify-between text-xs pt-3 border-t border-slate-100 gap-3">
 							<div className="flex flex-wrap items-center gap-2">
@@ -603,18 +370,6 @@ export default function DashboardAnalyticsSection() {
 									<FaLayerGroup className="text-xs" />
 									Daily Trends
 								</button>
-								<button
-									type="button"
-									onClick={() => setActiveTab("table")}
-									className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
-										activeTab === "table"
-											? "bg-[#134014] text-white shadow-xs"
-											: "text-slate-600 hover:text-slate-900"
-									}`}
-								>
-									<FaTable className="text-xs" />
-									Appointments Registry
-								</button>
 							</div>
 						</div>
 					</div>
@@ -632,27 +387,6 @@ export default function DashboardAnalyticsSection() {
 						</div>
 					) : (
 						<>
-							{/* Empty state when 0 appointments found */}
-							{appointmentList.length === 0 && !loading && (
-								<div className="flex flex-col items-center justify-center p-14 bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] text-center">
-									<div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center text-[#134014] text-2xl mb-3 shadow-inner">
-										<FaCalendarAlt />
-									</div>
-									<h3 className="text-lg font-extrabold text-slate-800">
-										No Appointments Found for Current Filter
-									</h3>
-									<p className="text-xs text-slate-500 max-w-md mt-1 mb-5">
-										No appointments match the created date range ({createdFrom || "any"} to {createdTo || "any"}) or schedule date.
-									</p>
-									<button
-										type="button"
-										onClick={() => handleDatePreset("all")}
-										className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#134014] text-white shadow-md shadow-[#134014]/25 hover:bg-emerald-800 transition-all cursor-pointer"
-									>
-										View All Time Appointments
-									</button>
-								</div>
-							)}
 
 							{/* Main Executive Distribution (Donut Chart + List + Top KPI cards) */}
 							{(activeTab === "all" || activeTab === "distribution") && (
@@ -817,35 +551,6 @@ export default function DashboardAnalyticsSection() {
 											</div>
 										</div>
 									</div>
-								</div>
-							)}
-
-							{/* Interactive Appointments Table */}
-							{(activeTab === "all" || activeTab === "table") && (
-								<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(19,64,20,0.04)] flex flex-col gap-4">
-									<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
-										<div className="flex items-center gap-2.5">
-											<div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-[#134014]">
-												<FaTable className="text-sm" />
-											</div>
-											<div>
-												<h3 className="text-base font-extrabold text-slate-800">
-													Filtered Appointments Registry
-												</h3>
-												<p className="text-xs text-slate-400 font-medium">
-													Appointments record list matching current date range and filters
-												</p>
-											</div>
-										</div>
-										<span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 self-start sm:self-auto">
-											{pagination?.totalElements ?? appointmentList.length} Appointments Found
-										</span>
-									</div>
-									<AppointmentDashTable
-										appointments={{ appointments: appointmentList, pagination: pagination }}
-										loading={loading}
-										onPageChange={(newPage) => setPage(newPage)}
-									/>
 								</div>
 							)}
 						</>
