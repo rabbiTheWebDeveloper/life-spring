@@ -7,7 +7,7 @@ interface Props {
 
 const page = async () => {
 	return (
-		<div className="flex flex-col gap-4 p-2 sm:p-4 pb-16">
+		<div className="flex flex-col gap-6 p-2 sm:p-5 pb-20 max-w-[1720px] mx-auto w-full">
 			<StatCards />
 			<DashboardAnalyticsSection />
 		</div>
@@ -15,4 +15,3 @@ const page = async () => {
 };
 
 export default page;
-

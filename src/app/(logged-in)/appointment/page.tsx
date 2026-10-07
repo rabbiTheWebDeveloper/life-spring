@@ -86,7 +86,7 @@ const AppointmentPage = ({ searchParams }: Props) => {
 				notes,
 				packageId,
 			);
-			// console.log("DATAAA", res?.data);
+			console.log("DATAAA Rabbi", res?.data);
 			// setSummary(res?.data?.totalPaymentSummary);
 			// console.log(res?.data?.appointments);
 			setAppointmentList(res?.data?.appointments);

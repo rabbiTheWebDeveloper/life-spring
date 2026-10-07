@@ -10,17 +10,20 @@ import { Appts, Payments } from '../../appointment/types/Models';
 import {useRouter} from "next/navigation";
 import {indexCount} from "@/helper/IndexCount";
 import {patientAge} from "@/helper/DateHelper";
-import {Table, Tooltip} from "antd";
-import {SlEye} from "react-icons/sl";
+import { Table, Tooltip, Pagination } from "antd";
+import { SlEye } from "react-icons/sl";
 
 interface Props {
-	appointments: Appointments
-	url: string;
+	appointments: any;
+	url?: string;
+	loading?: boolean;
+	onPageChange?: (page: number) => void;
 }
 
-const AppointmentDashTable = ({ appointments, url }: Props) => {
-	const appointmentData = appointments?.appointments;
-	const router=useRouter()
+const AppointmentDashTable = ({ appointments, url = "/dashboard", loading = false, onPageChange }: Props) => {
+	const appointmentData = Array.isArray(appointments) ? appointments : appointments?.appointments;
+	const paginationData = appointments?.pagination;
+	const router = useRouter();
 	const columns = [
 		{
 			title: "No",
@@ -44,6 +47,13 @@ const AppointmentDashTable = ({ appointments, url }: Props) => {
 					<FormattedTime isoString={record.scheduleStart} /> - <FormattedTime isoString={record.scheduleEnd} />
 				</>
 			),
+		},
+		{
+			title: "Created Date",
+			dataIndex: "createdAt",
+			key: "createdAt",
+			render: (_: string, record: any) =>
+				record.createdAt ? <FormattedDate isoString={record.createdAt} /> : "-",
 		},
 		{
 			title: "Patient Name",
@@ -79,63 +89,78 @@ const AppointmentDashTable = ({ appointments, url }: Props) => {
 			dataIndex: "appointmentType",
 			key: "appointmentType",
 			render: (_: string, appointment: any) => (
-				<button
-					className={`rounded-md py-.5 px-3.5 ${
+				<span
+					className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold capitalize ${
 						appointment.appointmentType === "online"
-							? "bg-[#6A0DAD] border-[#6A0DAD]"
-							: "bg-[#008080] border-[#008080]"
-					}  text-white`}
+							? "bg-purple-50 text-purple-700 border border-purple-200"
+							: "bg-teal-50 text-teal-700 border border-teal-200"
+					}`}
 				>
-					{appointment.appointmentType}
-				</button>
+					{appointment.appointmentType || "In-person"}
+				</span>
 			),
 		},
 		{
 			title: "Payment Status",
 			dataIndex: "paymentStatus",
 			key: "paymentStatus",
-			render: (_: string, appointment: any) => (
-				<button
-					className={clsx("rounded-md py-0 px-2", {
-						"bg-teal-500 border-[#B5FD93] text-white": Payments.isPaid(appointment),
-						"bg-amber-500 border-amber-300 text-white": Payments?.isPartiallyPaid(appointment),
-						"bg-cyan-500 border-[#93C5FD] text-white": Payments.isUnpaid(appointment),
-					})}
-				>
-					{Payments.getStatusValue(appointment)}
-				</button>
-			),
+			render: (_: string, appointment: any) => {
+				const isPaid = Payments.isPaid(appointment);
+				const isPartial = Payments?.isPartiallyPaid(appointment);
+				return (
+					<span
+						className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+							isPaid
+								? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+								: isPartial
+								? "bg-amber-50 text-amber-700 border border-amber-200"
+								: "bg-cyan-50 text-cyan-700 border border-cyan-200"
+						}`}
+					>
+						{Payments.getStatusValue(appointment)}
+					</span>
+				);
+			},
 		},
 		{
 			title: "Appt. Status",
 			dataIndex: "apptStatus",
 			key: "apptStatus",
-			render: (_: string, appointment: any) => (
-				<button
-					className={clsx("rounded-md py-0 px-2", {
-						"bg-[#DBEAFE] border-[#93C5FD] text-[#1E40AF]": Appts.isScheduled(appointment),
-						"bg-[#DBFEE3] border-[#B5FD93] text-[#12B76A]": Appts.isCompleted(appointment),
-						"bg-[#FEDBDB] border-[#FD9393] text-[#B71212]": Appts.isCancelled(appointment),
-						"bg-[#bcb9e2] border-[#be9292] text-white": Appts.isPending(appointment),
-					})}
-				>
-					{appointment.status}
-				</button>
-			),
+			render: (_: string, appointment: any) => {
+				const isSched = Appts.isScheduled(appointment);
+				const isComp = Appts.isCompleted(appointment);
+				const isCanc = Appts.isCancelled(appointment);
+				return (
+					<span
+						className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+							isComp
+								? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+								: isSched
+								? "bg-blue-50 text-blue-700 border border-blue-200"
+								: isCanc
+								? "bg-rose-50 text-rose-700 border border-rose-200"
+								: "bg-amber-50 text-amber-700 border border-amber-200"
+						}`}
+					>
+						{appointment.status || "Pending"}
+					</span>
+				);
+			},
 		},
 		{
 			title: "Action",
 			dataIndex: "action",
 			key: "action",
 			render: (_: any, record: any) => (
-				<div className="flex justify-start items-center gap-x-2 ">
-					<Tooltip placement="top" title={"View Details"} color={"#2db7f5"}>
-						<div
-							className="bg-teal-500 flex items-center justify-center rounded-md px-1 py-1 cursor-pointer text-white"
+				<div className="flex justify-start items-center">
+					<Tooltip placement="top" title="View Appointment Details">
+						<button
+							type="button"
+							className="w-8 h-8 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white flex items-center justify-center transition-all shadow-sm cursor-pointer border border-blue-100 hover:border-blue-600"
 							onClick={() => router.push(`/appointment/${record.id}`)}
 						>
-							<SlEye size={18}/>
-						</div>
+							<SlEye size={14} />
+						</button>
 					</Tooltip>
 				</div>
 			),
@@ -143,18 +168,38 @@ const AppointmentDashTable = ({ appointments, url }: Props) => {
 	];
 
 	return (
-		<div className="">
+		<div className="w-full">
 			<Table
 				columns={columns}
 				dataSource={appointmentData}
 				rowKey={(record: any) => record.id}
 				pagination={false}
+				loading={loading}
+				scroll={{ x: 850 }}
 			/>
-			<div className='flex justify-end bottom-5 text-right'>
-				<Paginator url={url} pagination={appointments?.pagination}/>
-			</div>
+			{onPageChange && paginationData ? (
+				<div className="flex flex-col sm:flex-row justify-between items-center py-4 px-2 gap-3 border-t border-slate-100 mt-2">
+					<span className="text-xs text-slate-500 font-medium">
+						Showing {appointmentData?.length || 0} of {paginationData?.totalElements || 0} appointments
+					</span>
+					<Pagination
+						current={(paginationData?.page || 0) + 1}
+						pageSize={paginationData?.size || 10}
+						total={paginationData?.totalElements || 0}
+						onChange={(p) => onPageChange(p - 1)}
+						size="small"
+						showSizeChanger={false}
+					/>
+				</div>
+			) : (
+				url && paginationData && (
+					<div className="flex justify-end bottom-5 text-right mt-3">
+						<Paginator url={url} pagination={paginationData} />
+					</div>
+				)
+			)}
 		</div>
-	)
+	);
 }
 
 export default AppointmentDashTable

@@ -22,11 +22,12 @@ export async function getAppointmentList(
 	isMigrated: any,
 	notes: any,
 	packageId?: any,
+	size?: any,
 ): Promise<any> {
 	console.log(`${sortBy && orderBy ? `&sort=${sortBy}:${orderBy}` : ""}`);
 	try {
 		return await get<any>(
-			`v2/appointment?size=10&page=${page}${packageId ? `&packageId=${packageId}` : ""}${status ? `&status=${status}` : ""}${notes ? `&notes=${notes}` : ""}${
+			`v2/appointment?size=${size || 10}&page=${page}${packageId ? `&packageId=${packageId}` : ""}${status ? `&status=${status}` : ""}${notes ? `&notes=${notes}` : ""}${
 				search ? `&search=${search}` : ""
 			}${fromCount && toCount ? `&from=${fromCount}&to=${toCount}` : ""}${
 				paymentStatus ? `&paymentStatus=${paymentStatus}` : ""
@@ -66,10 +67,11 @@ export async function getPaymentSummary(
 	isMigrated: any,
 	notes: any,
 	packageId?: any,
+	size?: any,
 ): Promise<any> {
 	try {
 		return await get<any>(
-			`v2/appointment/payment-summary?size=10&page=${page}${packageId ? `&packageId=${packageId}` : ""}${status ? `&status=${status}` : ""}${notes ? `&notes=${notes}` : ""}${
+			`v2/appointment/payment-summary?size=${size || 10}&page=${page}${packageId ? `&packageId=${packageId}` : ""}${status ? `&status=${status}` : ""}${notes ? `&notes=${notes}` : ""}${
 				search ? `&search=${search}` : ""
 			}${fromCount && toCount ? `&from=${fromCount}&to=${toCount}` : ""}${
 				paymentStatus ? `&paymentStatus=${paymentStatus}` : ""

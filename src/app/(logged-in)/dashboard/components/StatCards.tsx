@@ -1,4 +1,5 @@
 "use client";
+
 import DashInfoCards from "@/app/(logged-in)/dashboard/components/DashInfoCards";
 import RolePermissionChecker from "@/app/components/rolepermission/HandleRolePermission";
 import SidebarPermission from "@/app/components/sidebar/SidebarPermisson";
@@ -19,14 +20,17 @@ import {
 	FaUserMd,
 	FaUserShield,
 	FaUserTie,
+	FaThLarge,
+	FaBolt,
 } from "react-icons/fa";
 import { MdOutlinePayments, MdPendingActions } from "react-icons/md";
-
 import { getCountStats, getDashboardStats, getPaymentStats } from "../actions/getDashboardStats";
 
 const StatCards = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const loadedCountRef = useRef(0);
+	const [activeCategory, setActiveCategory] = useState<"all" | "today" | "finance" | "organization">("all");
+
 	const [dashboardStats, setDashboardStats] = useState<any>({
 		totalAppointments: 0,
 		todayAppointmentSlot: 0,
@@ -57,185 +61,286 @@ const StatCards = () => {
 		}
 	};
 
-	useEffect(() => {
+	const fetchAllStats = async () => {
 		setLoading(true);
 		loadedCountRef.current = 0;
-		const fetchData = async () => {
-			try {
-				const res: any = await getDashboardStats();
-				// console.log(res);
-				if (res?.success) {
-					setDashboardStats((prev: any) => ({
-						...prev,
-						...res.data,
-					}));
-				} else {
-					throw new Error(res?.message || "Failed to Fetch Dashboard Stats");
-				}
-			} catch (error) {
-				console.error("Failed to Fetch Dashboard Stats", error);
-			} finally {
-				checkLoadingComplete();
+
+		try {
+			const res: any = await getDashboardStats();
+			if (res?.success) {
+				setDashboardStats((prev: any) => ({ ...prev, ...res.data }));
 			}
-		};
-		fetchData();
-	}, []);
+		} catch (error) {
+			console.error("Failed to Fetch Dashboard Stats", error);
+		} finally {
+			checkLoadingComplete();
+		}
+
+		try {
+			const res: any = await getPaymentStats();
+			if (res?.success) {
+				setDashboardStats((prev: any) => ({ ...prev, ...res.data }));
+			}
+		} catch (error) {
+			console.error("Failed to Fetch Payment Stats", error);
+		} finally {
+			checkLoadingComplete();
+		}
+
+		try {
+			const res: any = await getCountStats();
+			if (res?.success) {
+				setDashboardStats((prev: any) => ({ ...prev, ...res.data }));
+			}
+		} catch (error) {
+			console.error("Failed to Fetch Count Stats", error);
+		} finally {
+			checkLoadingComplete();
+		}
+	};
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res: any = await getPaymentStats();
-				// console.log(res);
-				if (res?.success) {
-					setDashboardStats((prev: any) => ({
-						...prev,
-						...res.data,
-					}));
-				} else {
-					throw new Error(res?.message || "Failed to Fetch Payment Stats");
-				}
-			} catch (error) {
-				console.error("Failed to Fetch Payment Stats", error);
-			} finally {
-				checkLoadingComplete();
-			}
-		};
-		fetchData();
+		fetchAllStats();
 	}, []);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res: any = await getCountStats();
-				if (res?.success) {
-					setDashboardStats((prev: any) => ({
-						...prev,
-						...res.data,
-					}));
-				} else {
-					throw new Error(res?.message || "Failed to Fetch Count Stats");
-				}
-			} catch (error) {
-				console.error("Failed to Fetch Count Stats", error);
-			} finally {
-				checkLoadingComplete();
-			}
-		};
-		fetchData();
-	}, []);
-
-	const dashboardCards = [
+	const allCards = [
+		// Today's Pulse
 		{
-			text: "Today's Appointment Slot",
+			category: "today",
+			text: "Today's Appointment Slots",
 			amount: dashboardStats?.todayAppointmentSlot,
-			icon: <FaCalendarAlt size={35} className="text-blue-500" />,
+			icon: <FaCalendarAlt size={22} className="text-blue-600" />,
+			badge: "Today",
+			badgeColor: "blue" as const,
 		},
 		{
-			text: "Today's Confirm Appointment",
+			category: "today",
+			text: "Today's Confirmed Appts",
 			amount: dashboardStats?.todayConfirmedAppointments,
-			icon: <FaUserCheck size={35} className="text-green-500" />,
+			icon: <FaUserCheck size={22} className="text-emerald-600" />,
+			badge: "Confirmed",
+			badgeColor: "green" as const,
 		},
 		{
-			text: "Today's Pending Appointment",
+			category: "today",
+			text: "Today's Pending Appts",
 			amount: dashboardStats?.todayPendingAppointments,
-			icon: <MdPendingActions size={35} className="text-yellow-500" />,
+			icon: <MdPendingActions size={22} className="text-amber-500" />,
+			badge: "Pending",
+			badgeColor: "amber" as const,
 		},
 		{
-			text: "Today's Visited Appointment",
+			category: "today",
+			text: "Today's Visited Appts",
 			amount: dashboardStats?.todayVisitedAppointments,
-			icon: <FaCheckCircle size={35} className="text-green-600" />,
+			icon: <FaCheckCircle size={22} className="text-teal-600" />,
+			badge: "Visited",
+			badgeColor: "green" as const,
 		},
 		{
+			category: "today",
 			text: "Today's Payment Received",
-			amount: dashboardStats?.currentDateAppointmentPaymentReceived,
-			icon: <FaMoneyCheckAlt size={35} className="text-green-700" />,
+			amount: `৳${(dashboardStats?.currentDateAppointmentPaymentReceived || 0).toLocaleString()}`,
+			icon: <FaMoneyCheckAlt size={22} className="text-emerald-700" />,
+			badge: "Collections",
+			badgeColor: "green" as const,
 		},
 		{
+			category: "today",
 			text: "Today's Payment Refunded",
-			amount: dashboardStats?.currentDateTotalRefundAmount,
-			// amount: dashboardStats?.currentDateTotalRefundAmount,
-			icon: <AiOutlineRollback size={35} className="text-red-500" />,
-		},
-		{
-			text: "Total Payment Refunded",
-			amount: dashboardStats?.totalRefundAmount,
-			// amount: dashboardStats?.totalRefundAmount,
-			icon: <FaMoneyBillWave size={35} className="text-red-500" />,
-		},
-		{
-			text: "Total Payment Received",
-			amount: dashboardStats?.totalAppointmentPaymentReceived,
-			icon: <MdOutlinePayments size={35} className="text-green-700" />,
-		},
-		{
-			text: "Total VAT Collected",
-			amount: dashboardStats?.totalVat,
-			icon: <FaReceipt size={35} className="text-orange-500" />,
-		},
-		{
-			text: "Total Discount Given",
-			amount: dashboardStats?.totalDiscount,
-			icon: <FaTags size={35} className="text-pink-500" />,
-		},
-		{
-			text: "Total Fee Charged",
-			amount: dashboardStats?.totalFee,
-			icon: <FaCoins size={35} className="text-yellow-600" />,
-		},
-		{
-			text: "Branch",
-			amount: dashboardStats?.branchCount,
-			icon: <FaClinicMedical size={35} className="text-purple-600" />,
-		},
-		{
-			text: "Doctors",
-			amount: dashboardStats?.doctorCount,
-			icon: <FaUserMd size={35} className="text-cyan-600" />,
-		},
-		{
-			text: "Patients",
-			amount: dashboardStats?.patientCount,
-			icon: <FaUserInjured size={35} className="text-blue-600" />,
+			amount: `৳${(dashboardStats?.currentDateTotalRefundAmount || 0).toLocaleString()}`,
+			icon: <AiOutlineRollback size={22} className="text-rose-500" />,
+			badge: "Refund",
+			badgeColor: "rose" as const,
 		},
 
+		// Financial & Revenue
 		{
-			text: "Executive",
-			amount: dashboardStats?.executiveCount,
-			icon: <FaUserTie size={35} className="text-pink-600" />,
-		},
-		// {
-		// 	text: "Total Appointment Slot",
-		// 	amount: 28650,
-		// 	icon: <FaCalendarCheck size={30} className="text-blue-500" />,
-		// },
-		{
-			text: "Total Visited Appointment",
-			amount: dashboardStats?.totalAppointments,
-			icon: <FaCheckCircle size={35} className="text-green-600" />,
+			category: "finance",
+			text: "Total Payment Received",
+			amount: `৳${(dashboardStats?.totalAppointmentPaymentReceived || 0).toLocaleString()}`,
+			icon: <MdOutlinePayments size={22} className="text-emerald-600" />,
+			badge: "All-time",
+			badgeColor: "green" as const,
 		},
 		{
-			text: "Total Completed Appointments",
-			amount: dashboardStats?.totalCompletedAppointments,
-			icon: <FaClipboardCheck size={35} className="text-green-500" />,
+			category: "finance",
+			text: "Total Fee Charged",
+			amount: `৳${(dashboardStats?.totalFee || 0).toLocaleString()}`,
+			icon: <FaCoins size={22} className="text-amber-600" />,
+			badge: "Billable",
+			badgeColor: "amber" as const,
 		},
 		{
-			text: "Total Active Executive",
+			category: "finance",
+			text: "Total VAT Collected",
+			amount: `৳${(dashboardStats?.totalVat || 0).toLocaleString()}`,
+			icon: <FaReceipt size={22} className="text-orange-500" />,
+			badge: "Govt VAT",
+			badgeColor: "purple" as const,
+		},
+		{
+			category: "finance",
+			text: "Total Discount Given",
+			amount: `৳${(dashboardStats?.totalDiscount || 0).toLocaleString()}`,
+			icon: <FaTags size={22} className="text-pink-500" />,
+			badge: "Savings",
+			badgeColor: "purple" as const,
+		},
+		{
+			category: "finance",
+			text: "Total Payment Refunded",
+			amount: `৳${(dashboardStats?.totalRefundAmount || 0).toLocaleString()}`,
+			icon: <FaMoneyBillWave size={22} className="text-rose-600" />,
+			badge: "Refunds",
+			badgeColor: "rose" as const,
+		},
+
+		// Organization & Capacity
+		{
+			category: "organization",
+			text: "Active Branches",
+			amount: dashboardStats?.branchCount,
+			icon: <FaClinicMedical size={22} className="text-purple-600" />,
+			badge: "Centres",
+			badgeColor: "purple" as const,
+		},
+		{
+			category: "organization",
+			text: "Total Doctors",
+			amount: dashboardStats?.doctorCount,
+			icon: <FaUserMd size={22} className="text-cyan-600" />,
+			badge: "Specialists",
+			badgeColor: "blue" as const,
+		},
+		{
+			category: "organization",
+			text: "Registered Patients",
+			amount: dashboardStats?.patientCount,
+			icon: <FaUserInjured size={22} className="text-blue-600" />,
+			badge: "Total",
+			badgeColor: "blue" as const,
+		},
+		{
+			category: "organization",
+			text: "Active CRM Executives",
 			amount: dashboardStats?.activeExecutiveCount,
-			icon: <FaUserShield size={35} className="text-indigo-600" />,
+			icon: <FaUserShield size={22} className="text-indigo-600" />,
+			badge: "Staff",
+			badgeColor: "blue" as const,
+		},
+		{
+			category: "organization",
+			text: "Total Visited Appointments",
+			amount: dashboardStats?.totalAppointments,
+			icon: <FaCheckCircle size={22} className="text-emerald-600" />,
+			badge: "Completed",
+			badgeColor: "green" as const,
+		},
+		{
+			category: "organization",
+			text: "Total Completed Appts",
+			amount: dashboardStats?.totalCompletedAppointments,
+			icon: <FaClipboardCheck size={22} className="text-teal-600" />,
+			badge: "Closed",
+			badgeColor: "green" as const,
+		},
+		{
+			category: "organization",
+			text: "Total Assigned Executives",
+			amount: dashboardStats?.executiveCount,
+			icon: <FaUserTie size={22} className="text-pink-600" />,
+			badge: "All Staff",
+			badgeColor: "purple" as const,
 		},
 	];
+
+	const filteredCards =
+		activeCategory === "all"
+			? allCards
+			: allCards.filter((c) => c.category === activeCategory);
 
 	return (
 		<SidebarPermission tag="dashboard">
 			<RolePermissionChecker tag="dashboard" name="list">
-				<div className="w-full">
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 mt-4">
+				<div className="w-full flex flex-col gap-3">
+					{/* Header bar for Stats with category switcher */}
+					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/80 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-slate-200/70 shadow-sm">
+						<div className="flex items-center gap-2">
+							<span className="w-2 h-5 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full" />
+							<span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+								Overall Hospital Overview
+							</span>
+							<span className="text-[11px] font-semibold text-slate-400">
+								({filteredCards.length} KPIs)
+							</span>
+						</div>
+
+						{/* Quick category pills */}
+						<div className="flex items-center bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto text-xs">
+							<button
+								type="button"
+								onClick={() => setActiveCategory("all")}
+								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+									activeCategory === "all"
+										? "bg-white text-blue-600 shadow-sm"
+										: "text-slate-500 hover:text-slate-800"
+								}`}
+							>
+								All KPIs
+							</button>
+							<button
+								type="button"
+								onClick={() => setActiveCategory("today")}
+								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+									activeCategory === "today"
+										? "bg-white text-emerald-600 shadow-sm"
+										: "text-slate-500 hover:text-slate-800"
+								}`}
+							>
+								Today's Pulse
+							</button>
+							<button
+								type="button"
+								onClick={() => setActiveCategory("finance")}
+								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+									activeCategory === "finance"
+										? "bg-white text-purple-600 shadow-sm"
+										: "text-slate-500 hover:text-slate-800"
+								}`}
+							>
+								Revenue
+							</button>
+							<button
+								type="button"
+								onClick={() => setActiveCategory("organization")}
+								className={`px-3 py-1 font-bold rounded-lg transition-all ${
+									activeCategory === "organization"
+										? "bg-white text-indigo-600 shadow-sm"
+										: "text-slate-500 hover:text-slate-800"
+								}`}
+							>
+								Capacity
+							</button>
+						</div>
+					</div>
+
+					{/* Grid of Cards */}
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 						{loading
-							? Array.from({ length: dashboardCards.length }).map((_, index) => (
+							? Array.from({ length: 8 }).map((_, index) => (
 									<DashInfoCards key={`skeleton-${index}`} loading={true} />
 							  ))
-							: dashboardCards?.map((card, index) => (
-									<DashInfoCards key={index} text={card.text} amount={card.amount} icon={card.icon} loading={false} />
+							: filteredCards.map((card, index) => (
+									<DashInfoCards
+										key={index}
+										text={card.text}
+										amount={card.amount}
+										icon={card.icon}
+										badge={card.badge}
+										badgeColor={card.badgeColor}
+										loading={false}
+									/>
 							  ))}
 					</div>
 				</div>

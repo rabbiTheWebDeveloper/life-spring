@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import * as echarts from "echarts";
 import { DailyApplicationData } from "../data/sampleDashboardData";
-import { FaCalendarCheck, FaChartLine, FaCheckCircle, FaFire, FaMoneyBillWave } from "react-icons/fa";
+import { FaChartLine, FaCheckCircle, FaFire, FaMoneyBillWave, FaCalendarDay } from "react-icons/fa";
 
 interface Props {
 	data: DailyApplicationData[];
@@ -12,12 +12,14 @@ interface Props {
 export default function DailyApplicationGraph({ data }: Props) {
 	const chartRef = useRef<HTMLDivElement>(null);
 	const chartInstance = useRef<echarts.ECharts | null>(null);
-	const [timeRange, setTimeRange] = useState<"7d" | "14d">("14d");
-	const [activeMetric, setActiveMetric] = useState<"applications" | "confirmed" | "revenue">("applications");
+	const [timeRange, setTimeRange] = useState<"all" | "14d" | "7d">("all");
 
 	const filteredData = useMemo(() => {
 		if (timeRange === "7d") {
 			return data.slice(-7);
+		}
+		if (timeRange === "14d") {
+			return data.slice(-14);
 		}
 		return data;
 	}, [data, timeRange]);
@@ -32,7 +34,7 @@ export default function DailyApplicationGraph({ data }: Props) {
 	}, [filteredData]);
 
 	useEffect(() => {
-		if (!chartRef.current) return;
+		if (!chartRef.current || filteredData.length === 0) return;
 
 		if (!chartInstance.current) {
 			chartInstance.current = echarts.init(chartRef.current);
@@ -50,10 +52,10 @@ export default function DailyApplicationGraph({ data }: Props) {
 					type: "cross",
 					crossStyle: { color: "#94a3b8" },
 				},
-				backgroundColor: "rgba(255, 255, 255, 0.96)",
+				backgroundColor: "rgba(255, 255, 255, 0.98)",
 				borderColor: "#e2e8f0",
 				borderWidth: 1,
-				extraCssText: "box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-radius: 8px;",
+				extraCssText: "box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12); border-radius: 12px;",
 			},
 			legend: {
 				data: ["Total Applications", "Confirmed", "Daily Revenue (BDT)"],
@@ -61,6 +63,7 @@ export default function DailyApplicationGraph({ data }: Props) {
 				textStyle: {
 					color: "#64748b",
 					fontSize: 12,
+					fontWeight: 600,
 				},
 				icon: "circle",
 			},
@@ -75,21 +78,21 @@ export default function DailyApplicationGraph({ data }: Props) {
 				type: "category",
 				data: dates,
 				boundaryGap: false,
-				axisLine: { lineStyle: { color: "#cbd5e1" } },
-				axisLabel: { color: "#64748b", fontSize: 11 },
+				axisLine: { lineStyle: { color: "#e2e8f0" } },
+				axisLabel: { color: "#475569", fontSize: 11, fontWeight: 600 },
 			},
 			yAxis: [
 				{
 					type: "value",
 					name: "Applications",
-					nameTextStyle: { color: "#64748b", fontSize: 11 },
+					nameTextStyle: { color: "#64748b", fontSize: 11, fontWeight: 600 },
 					splitLine: { lineStyle: { type: "dashed", color: "#f1f5f9" } },
 					axisLabel: { color: "#94a3b8" },
 				},
 				{
 					type: "value",
-					name: "Revenue",
-					nameTextStyle: { color: "#64748b", fontSize: 11 },
+					name: "Revenue (BDT)",
+					nameTextStyle: { color: "#64748b", fontSize: 11, fontWeight: 600 },
 					splitLine: { show: false },
 					axisLabel: {
 						formatter: (val: number) => `৳${(val / 1000).toFixed(0)}k`,
@@ -103,13 +106,13 @@ export default function DailyApplicationGraph({ data }: Props) {
 					type: "line",
 					smooth: true,
 					showSymbol: true,
-					symbolSize: 6,
-					itemStyle: { color: "#3B82F6" },
-					lineStyle: { width: 3, color: "#3B82F6" },
+					symbolSize: 7,
+					itemStyle: { color: "#2563eb" },
+					lineStyle: { width: 3, color: "#2563eb" },
 					areaStyle: {
 						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: "rgba(59, 130, 246, 0.35)" },
-							{ offset: 1, color: "rgba(59, 130, 246, 0.0)" },
+							{ offset: 0, color: "rgba(37, 99, 235, 0.28)" },
+							{ offset: 1, color: "rgba(37, 99, 235, 0.0)" },
 						]),
 					},
 					data: appValues,
@@ -120,12 +123,12 @@ export default function DailyApplicationGraph({ data }: Props) {
 					smooth: true,
 					showSymbol: true,
 					symbolSize: 6,
-					itemStyle: { color: "#10B981" },
-					lineStyle: { width: 2.5, color: "#10B981" },
+					itemStyle: { color: "#059669" },
+					lineStyle: { width: 2.5, color: "#059669" },
 					areaStyle: {
 						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							{ offset: 0, color: "rgba(16, 185, 129, 0.25)" },
-							{ offset: 1, color: "rgba(16, 185, 129, 0.0)" },
+							{ offset: 0, color: "rgba(5, 150, 105, 0.2)" },
+							{ offset: 1, color: "rgba(5, 150, 105, 0.0)" },
 						]),
 					},
 					data: confValues,
@@ -134,9 +137,12 @@ export default function DailyApplicationGraph({ data }: Props) {
 					name: "Daily Revenue (BDT)",
 					type: "bar",
 					yAxisIndex: 1,
-					barWidth: 12,
+					barWidth: 14,
 					itemStyle: {
-						color: "rgba(139, 92, 246, 0.4)",
+						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+							{ offset: 0, color: "rgba(147, 51, 234, 0.65)" },
+							{ offset: 1, color: "rgba(147, 51, 234, 0.2)" },
+						]),
 						borderRadius: [4, 4, 0, 0],
 					},
 					data: revValues,
@@ -153,33 +159,34 @@ export default function DailyApplicationGraph({ data }: Props) {
 	}, [filteredData]);
 
 	return (
-		<div className="bg-white rounded-2xl border border-slate-200/70 p-6 sm:p-8 shadow-sm flex flex-col gap-5 hover:shadow-md transition-all duration-200">
+		<div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] flex flex-col gap-5 hover:shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-all duration-200">
 			{/* Header with Title & Range Filter */}
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
 				<div>
 					<div className="flex items-center gap-2">
-						<FaChartLine className="text-blue-600 text-base" />
-						<h3 className="text-base font-bold text-slate-800">
-							Daily Applications & Revenue Trends
+						<div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+							<FaChartLine className="text-sm" />
+						</div>
+						<h3 className="text-base font-extrabold text-slate-800">
+							Daily Intake & Revenue Trends
 						</h3>
 					</div>
-					<p className="text-xs text-slate-400 mt-1">
-						Real-time intake tracking with confirmation and revenue volume
+					<p className="text-xs font-medium text-slate-400 mt-1 pl-10">
+						Tracking day-over-day application submissions, confirmation rates, and payments
 					</p>
 				</div>
 
-				{/* Range Switcher */}
-				<div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+				<div className="flex items-center bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto border border-slate-200/50">
 					<button
 						type="button"
-						onClick={() => setTimeRange("7d")}
+						onClick={() => setTimeRange("all")}
 						className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-							timeRange === "7d"
+							timeRange === "all"
 								? "bg-white text-blue-600 shadow-sm"
 								: "text-slate-500 hover:text-slate-700"
 						}`}
 					>
-						Last 7 Days
+						Period View
 					</button>
 					<button
 						type="button"
@@ -190,33 +197,64 @@ export default function DailyApplicationGraph({ data }: Props) {
 								: "text-slate-500 hover:text-slate-700"
 						}`}
 					>
-						Last 14 Days
+						14 Days
+					</button>
+					<button
+						type="button"
+						onClick={() => setTimeRange("7d")}
+						className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+							timeRange === "7d"
+								? "bg-white text-blue-600 shadow-sm"
+								: "text-slate-500 hover:text-slate-700"
+						}`}
+					>
+						7 Days
 					</button>
 				</div>
 			</div>
 
 			{/* Mini Stats Bar */}
-			<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+			<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200/60">
 				<div className="flex flex-col">
-					<span className="text-[11px] font-semibold text-slate-400">Total Applications</span>
-					<span className="text-lg font-bold text-blue-600">{totalApps}</span>
+					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+						Applications
+					</span>
+					<span className="text-xl font-black text-blue-600">{totalApps}</span>
 				</div>
 				<div className="flex flex-col">
-					<span className="text-[11px] font-semibold text-slate-400">Total Confirmed</span>
-					<span className="text-lg font-bold text-emerald-600">{totalConfirmed}</span>
+					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+						Confirmed
+					</span>
+					<span className="text-xl font-black text-emerald-600">{totalConfirmed}</span>
 				</div>
 				<div className="flex flex-col">
-					<span className="text-[11px] font-semibold text-slate-400">Daily Average</span>
-					<span className="text-lg font-bold text-slate-700">{avgDaily} / day</span>
+					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+						Avg / Day
+					</span>
+					<span className="text-xl font-black text-slate-800">{avgDaily}</span>
 				</div>
 				<div className="flex flex-col">
-					<span className="text-[11px] font-semibold text-slate-400">Period Revenue</span>
-					<span className="text-lg font-bold text-purple-600">৳{totalRevenue.toLocaleString()}</span>
+					<span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+						Period Revenue
+					</span>
+					<span className="text-xl font-black text-purple-600">
+						৳{totalRevenue.toLocaleString()}
+					</span>
 				</div>
 			</div>
 
 			{/* Main Trend Line/Bar Chart */}
-			<div ref={chartRef} className="w-full h-[320px]" />
+			{filteredData.length === 0 ? (
+				<div className="w-full h-[320px] flex flex-col items-center justify-center text-center p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 mt-2">
+					<FaChartLine className="text-4xl text-slate-300 mb-2" />
+					<p className="text-sm font-bold text-slate-700">No Daily Trend Records</p>
+					<p className="text-xs text-slate-400 mt-1">
+						No appointments found within this date range.
+					</p>
+				</div>
+			) : (
+				<div ref={chartRef} className="w-full h-[320px]" />
+			)}
 		</div>
 	);
 }
